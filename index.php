@@ -37,7 +37,7 @@ $pageTitle = 'Accedi | ' . $config['app']['name'];
         </div>
         <div class="col-lg-5 ms-lg-auto">
             <div class="card-service p-4">
-                <h2 class="h4 mb-3">Accesso clienti</h2>
+                <h2 class="h4 mb-3">Accesso area riservata</h2>
                 <form method="post" action="/api/auth.php?action=login" data-async="true" class="needs-validation" novalidate>
                     <input type="hidden" name="_csrf_token" value="<?= escape(get_csrf_token()) ?>">
                     <div class="mb-3">
