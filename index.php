@@ -1,3 +1,8 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -6,13 +11,15 @@
     <title>Login - Area Clienti Agenzia Plinio</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="alternate icon" href="assets/images/favicon.svg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="login-page">
     <div class="auth-layout">
         <aside class="auth-side">
             <div class="auth-side-header">
-                <img src="assets/images/logo.png" alt="Agenzia Plinio" class="brand-logo">
+                <img src="assets/images/logo.svg" alt="Agenzia Plinio" class="brand-logo">
                 <div class="brand-tagline">
                     <span class="eyebrow">Area Clienti</span>
                     <h2>Il tuo punto di accesso unico</h2>
