@@ -73,6 +73,7 @@ ErrorDocument 500 /area-clienti/errors/500.php
 RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?agenziaplinio\.it [NC]
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?localhost [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?sienna-newt-368622\.hostingersite\.com [NC]
 RewriteRule \.(jpg|jpeg|png|gif|css|js)$ - [F]
 
 # Rimozione estensione .php dalle URL
