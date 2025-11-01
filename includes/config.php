@@ -72,6 +72,17 @@ const UPLOAD_PATH = BASE_PATH . '/uploads';
 load_env_file(BASE_PATH . '/.env');
 load_env_file(BASE_PATH . '/.env.local');
 
+$dbUsername = env_value('DB_USERNAME', null);
+if ($dbUsername === null || $dbUsername === '') {
+    $dbUsername = env_value('DB_USER', null, true);
+}
+
+$dbPassword = env_value('DB_PASSWORD', null);
+if ($dbPassword === null) {
+    $legacyPassword = env_value('DB_PASS', null);
+    $dbPassword = $legacyPassword !== null ? $legacyPassword : '';
+}
+
 $config = [
     'app' => [
         'name' => 'AG Servizi Area Personale',
@@ -84,8 +95,8 @@ $config = [
     'host' => env_value('DB_HOST', null, true),
     'port' => (int) env_value('DB_PORT', 3306),
     'database' => env_value('DB_NAME', null, true),
-    'username' => env_value('DB_USERNAME', env_value('DB_USER', null, true), true),
-    'password' => env_value('DB_PASSWORD', env_value('DB_PASS', null, true), true),
+        'username' => $dbUsername,
+        'password' => $dbPassword,
         'charset' => env_value('DB_CHARSET', 'utf8mb4'),
         'collation' => env_value('DB_COLLATION', 'utf8mb4_unicode_ci'),
     ],
