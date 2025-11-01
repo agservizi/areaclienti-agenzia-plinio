@@ -91,7 +91,19 @@
                         method: form.method || "POST",
                         body: formData,
                     });
-                    const payload = await response.json();
+                    const raw = await response.text();
+                    let payload;
+                    try {
+                        payload = raw ? JSON.parse(raw) : null;
+                    } catch (parseError) {
+                        console.error("Async form parse error", parseError, raw);
+                        throw new Error("Risposta non valida dal server");
+                    }
+
+                    if (!payload) {
+                        throw new Error("Risposta vuota dal server");
+                    }
+
                     if (payload.success) {
                         form.dispatchEvent(new CustomEvent("async:success", { detail: payload }));
                     } else {
@@ -99,7 +111,8 @@
                     }
                 } catch (error) {
                     console.error("Async form error", error);
-                    form.dispatchEvent(new CustomEvent("async:error", { detail: { success: false, errors: ["Errore di rete"] } }));
+                    const message = error instanceof Error ? error.message : "Errore di rete";
+                    form.dispatchEvent(new CustomEvent("async:error", { detail: { success: false, errors: [message] } }));
                 } finally {
                     if (submitBtn) {
                         submitBtn.disabled = false;
