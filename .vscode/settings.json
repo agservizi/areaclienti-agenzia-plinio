@@ -10,9 +10,9 @@
             "server": "193.203.168.205",
             "port": 3306,
             "driver": "MySQL",
+            "name": "portal",
             "database": "u427445037_portal",
-            "username": "u427445037_portal",
-            "name": "PORTAL"
+            "username": "u427445037_portal"
         }
     ]
 }

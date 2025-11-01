@@ -1,0 +1,300 @@
+:root {
+    --color-bg: #0e0e10;
+    --color-bg-alt: #151519;
+    --color-card: #1f1f24;
+    --color-accent: #ffbf00;
+    --color-text: #f3f3f4;
+    --color-muted: #8b8b95;
+    --color-success: #3ac47d;
+    --color-danger: #d9534f;
+    --color-info: #1f8ef1;
+    --border-radius-lg: 1rem;
+    --border-radius-md: 0.75rem;
+    --border-radius-sm: 0.5rem;
+    --shadow-soft: 0 20px 45px rgba(0, 0, 0, 0.35);
+}
+
+body {
+    background: radial-gradient(circle at top, rgba(255, 191, 0, 0.05), transparent 55%), var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover,
+a:focus {
+    color: #ffd44d;
+}
+
+main {
+    padding: 2.5rem 0;
+}
+
+.header-minimal {
+    background: rgba(12, 12, 14, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: 0.05em;
+}
+
+.navbar-brand-logo span {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+}
+
+.hero-parallax {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    background: linear-gradient(135deg, rgba(255, 191, 0, 0.12), rgba(32, 32, 48, 0.85));
+    min-height: 280px;
+}
+
+.hero-parallax::before,
+.hero-parallax::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(255, 191, 0, 0.25), transparent 55%);
+    transform: translateZ(0);
+    pointer-events: none;
+}
+
+.hero-parallax .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(10, 10, 12, 0.8), rgba(10, 10, 12, 0.4));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem;
+}
+
+.card-service {
+    background: var(--color-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+}
+
+.card-service:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 65px rgba(0, 0, 0, 0.45);
+}
+
+.card-service .badge-category {
+    background: rgba(255, 191, 0, 0.12);
+    color: var(--color-accent);
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.card-service .card-title {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.table-dark-modern {
+    --bs-table-bg: rgba(18, 18, 20, 0.85);
+    --bs-table-striped-bg: rgba(32, 32, 36, 0.9);
+    --bs-table-hover-bg: rgba(255, 191, 0, 0.1);
+    color: var(--color-text);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.badge-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-status.pending {
+    background: rgba(255, 191, 0, 0.16);
+    color: var(--color-accent);
+}
+
+.badge-status.processing {
+    background: rgba(31, 142, 241, 0.16);
+    color: var(--color-info);
+}
+
+.badge-status.completed {
+    background: rgba(58, 196, 125, 0.16);
+    color: var(--color-success);
+}
+
+.badge-status.rejected {
+    background: rgba(217, 83, 79, 0.16);
+    color: var(--color-danger);
+}
+
+.btn-accent {
+    background: var(--color-accent);
+    color: #0f0f11;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1.5rem;
+    letter-spacing: 0.04em;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+    background: #ffd44d;
+    color: #0f0f11;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(255, 191, 0, 0.25);
+}
+
+.sidebar-admin {
+    background: rgba(18, 18, 22, 0.95);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    padding-top: 2rem;
+}
+
+.sidebar-admin .nav-link {
+    color: var(--color-muted);
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-admin .nav-link.active,
+.sidebar-admin .nav-link:hover {
+    background: rgba(255, 191, 0, 0.16);
+    color: var(--color-text);
+}
+
+.stat-card {
+    background: var(--color-card);
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.toast-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1080;
+}
+
+.form-control,
+.form-select {
+    background-color: rgba(12, 12, 16, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--color-text);
+    border-radius: var(--border-radius-sm);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 0.2rem rgba(255, 191, 0, 0.18);
+}
+
+.form-label {
+    color: var(--color-muted);
+    font-weight: 500;
+}
+
+.table-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.table-controls .form-select,
+.table-controls .form-control {
+    max-width: 180px;
+}
+
+.table-controls .btn {
+    border-radius: var(--border-radius-sm);
+}
+
+footer {
+    background: rgba(10, 10, 12, 0.8);
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+footer .footer-links a {
+    color: var(--color-muted);
+    margin-right: 1.5rem;
+    font-size: 0.9rem;
+}
+
+footer .footer-links a:hover {
+    color: var(--color-text);
+}
+
+.table-responsive {
+    border-radius: var(--border-radius-md);
+    background: rgba(24, 24, 28, 0.85);
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.placeholder-card {
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    color: var(--color-muted);
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    .hero-content {
+        padding: 2rem;
+    }
+
+    .sidebar-admin {
+        position: static;
+        min-height: initial;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .hero-parallax {
+        min-height: 220px;
+    }
+
+    .hero-content {
+        padding: 1.5rem;
+    }
+}

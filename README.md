@@ -1,204 +1,87 @@
-# Area Clienti - Agenzia Plinio
+# AG Servizi Area Personale
 
-Sistema completo di gestione dell'area clienti per l'Agenzia Plinio, sviluppato in PHP nativo, JavaScript vanilla e CSS avanzato.
+Portale PHP 8 per la gestione di clienti e operatori AG Servizi. Include area cliente, area admin, API interne, logging applicativo e storage opzionale cifrato per gli allegati.
 
-## 🚀 Caratteristiche Principali
+## Requisiti
 
-- **Autenticazione sicura** con gestione sessioni e protezioni contro attacchi
-- **Dashboard interattiva** con statistiche in tempo reale
-- **Gestione servizi completa** per tutti i servizi offerti dall'agenzia
-- **Design responsive** ottimizzato per tutti i dispositivi
-- **Interfaccia moderna** con animazioni e transizioni fluide
-- **Sistema di notifiche** per aggiornamenti in tempo reale
+- PHP 8.1+
+- Estensioni: pdo_mysql, sodium, json, iconv, fileinfo
+- MySQL 8+
+- Server web configurato per puntare alla cartella del progetto
 
-## 📋 Servizi Disponibili
+## Configurazione rapida
 
-### Servizi Principali
-- **Spedizioni** - Gestione spedizioni nazionali e internazionali (BRT, Poste, TNT/FedEx)
-- **Pagamenti** - Bollettini, F24, PagoPA, MAV/RAV, Bonifici
-- **Biglietteria** - Biglietti treno Trenitalia e Italo
-- **Attivazioni Digitali** - SPID, PEC, Firma Digitale (Namirial)
+1. Copiare `.env.example` (se presente) oppure creare `.env` impostando le variabili richieste (DB, app, storage). I valori vengono caricati automaticamente da `includes/config.php` e non sono salvati nel repository.
+2. Installare le dipendenze PHP native necessarie (nessun composer richiesto).
+3. Importare lo schema principale per un database vuoto:
+   ```bash
+   mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" < sql/install_full.sql
+   ```
+   In alternativa, eseguire `sql/migrations/20251101_fresh_install.sql` dopo aver dato `USE "$DB_NAME";`.
+4. Creare un admin iniziale:
+   ```bash
+   php scripts/seed_admin.php --email=admin@agservizi.test --password=Admin123!
+   ```
+5. (Opzionale) Attivare lo storage cifrato filesystem:
+   ```bash
+   php scripts/generate_storage_key.php
+   ```
+   Impostare nel `.env`: `STORAGE_DRIVER=filesystem`.
+6. Configurare il server web (Apache/Nginx) per inviare tutte le richieste PHP alla root del progetto.
 
-### Servizi Secondari
-- **CAF e Patronato** - Pratiche fiscali e assistenza previdenziale
-- **Visure** - Visure CRIF, catastali, camerali, protestati
-- **Telefonia e Utenze** - Contratti luce, gas, telefonia
-- **Servizi Postali** - Invio email e PEC
-- **Ritiro Pacchi** - Gestione punti di ritiro
+## Struttura principale
 
-## 🛠️ Tecnologie Utilizzate
+- `admin/` pagine area amministrativa.
+- `client/` pagine area cliente.
+- `api/` endpoint REST interni con risposte JSON.
+- `includes/` configurazione, helper, autenticazione, reportistica.
+- `assets/` CSS, JS e vendor locali (Bootstrap incluso).
+- `templates/` componenti riutilizzabili.
+- `scripts/` utility CLI per chiavi e admin seed.
+- `uploads/` storage chiaro (driver mysql).
+- `storage/encrypted/` storage cifrato (driver filesystem).
+- `logs/` file di log con rotazione giornaliera automatica.
 
-- **Backend**: PHP 7.4+ nativo
-- **Frontend**: JavaScript ES6+ vanilla, CSS3 avanzato
-- **Database**: MySQL 5.7+
-- **Icons**: Font Awesome 6
-- **Fonts**: Inter (Google Fonts)
+## Database
 
-## 📁 Struttura del Progetto
+- Tabelle principali: `users`, `services`, `requests`.
+- `sql/schema.sql` contiene schema e dati demo per i servizi.
+- Script `scripts/seed_admin.php` crea o aggiorna l'admin rispetto all'email fornita.
+- Richieste e allegati vengono salvati in JSON all'interno della tabella `requests`.
 
-```
-area-clienti/
-├── api/                    # Endpoint API REST
-│   └── auth/              # API di autenticazione
-├── assets/                # Risorse statiche
-│   ├── css/              # Fogli di stile
-│   ├── js/               # Script JavaScript
-│   └── images/           # Immagini e loghi
-├── config/               # Configurazioni
-│   ├── config.php        # Configurazione generale
-│   ├── database.php      # Configurazione database
-│   └── database.sql      # Script creazione database
-├── includes/             # File PHP includibili
-│   ├── auth.php          # Classe autenticazione
-│   ├── header.php        # Header template
-│   ├── footer.php        # Footer template
-│   └── sidebar.php       # Sidebar template
-├── pages/                # Pagine dell'area clienti
-├── admin/                # Area amministrativa
-├── services/             # Classi dei servizi
-└── index.php            # Pagina di login
-```
+## Storage allegati
 
-## 🚀 Installazione
+- Driver `mysql` (default): file salvati nel percorso `uploads/` con nome random.
+- Driver `filesystem`: contenuto cifrato con `libsodium` in `storage/encrypted/{user_id}`.
+- Generare la chiave tramite `php scripts/generate_storage_key.php`; lo script crea `storage/.master.key` con permessi 600.
+- Download allegati gestiti da `request-download.php`, con controllo ruolo e proprietario.
 
-### Prerequisiti
-- PHP 7.4 o superiore
-- MySQL 5.7 o superiore
-- Web server (Apache/Nginx)
-- Composer (opzionale)
+## Sicurezza
 
-### Passaggi di Installazione
+- Autenticazione basata su sessioni e ruoli (cliente/admin).
+- Password salvate con `password_hash` Argon2id.
+- CSRF token rigenerato e validato su tutte le form sensibili.
+- Log applicativi in `logs/` con rotazione automatica (mantiene `max_files` recenti in configurazione).
+- Upload filtrati per MIME, dimensione e, se attivo, cifrati.
 
-1. **Clona il repository**
-```bash
-git clone [repository-url]
-cd area-clienti
-```
+## Reportistica
 
-2. **Configura il database**
-```sql
--- Importa il file SQL
-mysql -u username -p database_name < config/database.sql
-```
+- Pagina `admin/reports.php` con filtri per data, stato e servizio.
+- Esportazione CSV e PDF nativa (generatore minimale, nessuna dipendenza esterna).
+- Script riutilizzabili in `includes/reporting.php` per futuri report custom.
 
-3. **Configura l'applicazione**
-```php
-// Modifica config/config.php
-define('SITE_URL', 'http://tuo-dominio.com/area-clienti');
-define('ADMIN_EMAIL', 'admin@agenziaplinio.it');
+## Checklist test manuali
 
-// Modifica config/database.php
-private $host = 'localhost';
-private $database = 'agenzia_plinio_clienti';
-private $username = 'tuo_username';
-private $password = 'tua_password';
-```
+Vedere `docs/testing-checklist.md` per la lista completa. Suggerito almeno:
 
-4. **Imposta i permessi**
-```bash
-chmod 755 -R area-clienti/
-chmod 777 -R area-clienti/uploads/ # Se presente
-```
+- Registrazione utente e login.
+- Creazione richiesta con allegato (entrambi i driver storage).
+- Download allegato lato cliente e admin.
+- Aggiornamento stato richiesta da area admin.
+- Export CSV/PDF dalla pagina report.
 
-5. **Configura il web server**
-```apache
-# .htaccess per Apache
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
-```
+## Note operative
 
-## 👤 Account Predefiniti
-
-### Administrator
-- **Username**: `admin`
-- **Email**: `admin@agenziaplinio.it`
-- **Password**: `password` (da cambiare immediatamente)
-
-## 🔐 Sicurezza
-
-- Hashing delle password con `password_hash()`
-- Protezione CSRF con token
-- Validazione e sanitizzazione input
-- Sessioni sicure con timeout
-- Protezione contro SQL injection
-- Limitazione tentativi di login
-
-## 📱 Responsive Design
-
-L'interfaccia è completamente responsive e ottimizzata per:
-- Desktop (1200px+)
-- Tablet (768px - 1199px)
-- Mobile (fino a 767px)
-
-## 🎨 Personalizzazione CSS
-
-Il sistema utilizza variabili CSS per facilitare la personalizzazione:
-
-```css
-:root {
-    --primary-color: #2c5aa0;
-    --secondary-color: #f39c12;
-    --success-color: #27ae60;
-    --danger-color: #e74c3c;
-    /* ... altre variabili */
-}
-```
-
-## 📊 API Documentation
-
-### Autenticazione
-- `POST /api/auth/login.php` - Login utente
-- `POST /api/auth/logout.php` - Logout utente
-- `POST /api/auth/register.php` - Registrazione cliente
-- `GET /api/auth/check-session.php` - Verifica sessione
-
-### Servizi
-- `GET /api/services/list.php` - Lista servizi
-- `POST /api/services/request.php` - Nuova richiesta
-- `GET /api/services/request/{id}` - Dettagli richiesta
-
-## 🔧 Configurazioni Avanzate
-
-### Email
-```php
-// config/config.php
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_PORT', 587);
-define('SMTP_USERNAME', 'your-email@gmail.com');
-define('SMTP_PASSWORD', 'your-app-password');
-```
-
-### API Keys Servizi
-```php
-// config/config.php
-define('BRT_API_KEY', 'your-brt-api-key');
-define('POSTE_API_KEY', 'your-poste-api-key');
-define('TNT_API_KEY', 'your-tnt-api-key');
-```
-
-## 🐛 Debug
-
-Per abilitare il debug mode:
-```php
-// config/config.php
-define('DEBUG_MODE', true);
-define('LOG_ERRORS', true);
-```
-
-## 📞 Supporto
-
-Per supporto tecnico contattare:
-- **Email**: info@agenziaplinio.it
-- **Telefono**: +39 081 0584542
-
-## 📄 Licenza
-
-© 2025 AG Servizi Via Plinio 72. Tutti i diritti riservati.
-P.IVA: 08442881218 | REA: NA-985288
-
----
-
-**Versione**: 1.0.0  
-**Ultimo aggiornamento**: Novembre 2025
+- Log ruotano automaticamente: configurare `logs.max_files` in `includes/config.php` o `.env`.
+- In ambienti multi-server assicurarsi di condividere la chiave di cifratura in modo sicuro.
+- Per debug attivare `APP_DEBUG=true` nel `.env`; ricordarsi di disattivarlo in produzione.
