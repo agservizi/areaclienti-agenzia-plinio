@@ -20,12 +20,12 @@ $user = current_user();
 </head>
 <body data-csrf="<?= escape(get_csrf_token()) ?>">
 <header class="header-minimal sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand navbar-brand-logo" href="/">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <rect width="24" height="24" rx="8" fill="#ffbf00"></rect>
-                    <path d="M7 7h10v2H7zM7 11h6v2H7zM7 15h10v2H7z" fill="#111"></path>
+                    <rect width="24" height="24" rx="8" fill="#2a64d6"></rect>
+                    <path d="M7 7h10v2H7zM7 11h6v2H7zM7 15h10v2H7z" fill="#ffffff"></path>
                 </svg>
                 <span>AG Servizi</span>
             </a>

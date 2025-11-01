@@ -1,9 +1,23 @@
 <?php
 declare(strict_types=1);
 
-$pageTitle = 'Accedi';
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/helpers.php';
+require_once __DIR__ . '/includes/auth.php';
+
+ensure_csrf_token();
+$config = get_config();
+$pageTitle = 'Accedi | ' . $config['app']['name'];
 ?>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= escape($pageTitle) ?></title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body data-csrf="<?= escape(get_csrf_token()) ?>">
 <div class="container py-5">
     <div class="row align-items-center gy-5">
         <div class="col-lg-6">
@@ -51,4 +65,7 @@ require_once __DIR__ . '/includes/header.php';
         alert(event.detail.errors ? event.detail.errors.join('\n') : 'Login fallito');
     });
 </script>
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+    <script src="/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>
