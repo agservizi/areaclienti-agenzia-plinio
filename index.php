@@ -9,135 +9,131 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="login-page">
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <img src="assets/images/logo.png" alt="Agenzia Plinio" class="logo">
-                <h1>Area Clienti</h1>
-                <p>Accedi al tuo account per gestire i tuoi servizi</p>
+    <div class="auth-layout">
+        <aside class="auth-side">
+            <div class="auth-side-header">
+                <img src="assets/images/logo.png" alt="Agenzia Plinio" class="brand-logo">
+                <div class="brand-tagline">
+                    <span class="eyebrow">Area Clienti</span>
+                    <h2>Il tuo punto di accesso unico</h2>
+                </div>
             </div>
 
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
+            <div class="auth-side-body">
+                <p class="side-intro">Gestisci spedizioni, attivazioni digitali e pratiche CAF in un’unica piattaforma con assistenza dedicata.</p>
+
+                <div class="side-metrics">
+                    <div class="metric">
+                        <span class="metric-value">24/7</span>
+                        <span class="metric-label">Portale sempre attivo</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">+1200</span>
+                        <span class="metric-label">Pratiche gestite l’anno</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">4.8/5</span>
+                        <span class="metric-label">Soddisfazione clienti</span>
+                    </div>
+                </div>
+
+                <div class="side-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-shipping-fast"></i>
+                        <div>
+                            <h3>Spedizioni integrate</h3>
+                            <p>Ritiro, monitoraggio e documenti tutto online, con notifiche automatiche.</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-digital-tachograph"></i>
+                        <div>
+                            <h3>Identità digitale</h3>
+                            <p>SPID, PEC e firma digitale con workflow guidati e reminder intelligenti.</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <h3>CAF & Patronato</h3>
+                            <p>Carica documenti, prenota appuntamenti e segui le tue pratiche in tempo reale.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-side-footer">
+                <div>
+                    <span class="footer-label">Assistenza dedicata</span>
+                    <a href="tel:+390815678321" class="footer-value">081 567 8321</a>
+                </div>
+                <div>
+                    <span class="footer-label">Scrivici</span>
+                    <a href="mailto:assistenza@agenziaplinio.it" class="footer-value">assistenza@agenziaplinio.it</a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="auth-content">
+            <div class="auth-content-header">
+                <span class="eyebrow">Accesso clienti registrati</span>
+                <h1>Benvenuto in Agenzia Plinio</h1>
+                <p>Accedi per gestire servizi, richieste e aggiornamenti in modo rapido e centralizzato.</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-field">
                     <label for="username">
                         <i class="fas fa-user"></i>
                         Username o Email
                     </label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" autocomplete="username" required>
                 </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label for="password">
                         <i class="fas fa-lock"></i>
                         Password
                     </label>
                     <div class="password-input">
-                        <input type="password" id="password" name="password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
+                        <button type="button" class="toggle-password" aria-label="Mostra password" onclick="togglePassword()">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="form-options">
+                <div class="form-meta">
                     <label class="checkbox-container">
                         <input type="checkbox" id="remember" name="remember">
                         <span class="checkmark"></span>
                         Ricordami
                     </label>
-                    <a href="#" class="forgot-password" onclick="showForgotPassword()">Password dimenticata?</a>
+                    <button type="button" class="link-button" onclick="showForgotPassword()">Password dimenticata?</button>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-full">
                     <i class="fas fa-sign-in-alt"></i>
-                    Accedi
+                    Accedi al portale
                 </button>
 
-                <div class="login-divider">
-                    <span>oppure</span>
+                <div class="form-divider">
+                    <span>Oppure</span>
                 </div>
 
                 <button type="button" class="btn btn-secondary btn-full" onclick="showRegister()">
                     <i class="fas fa-user-plus"></i>
-                    Registrati come nuovo cliente
+                    Richiedi credenziali cliente
                 </button>
             </form>
 
+            <div id="alert-container" aria-live="polite"></div>
 
-            <div id="alert-container"></div>
-        </div>
-
-        <aside class="login-info-panel">
-            <div class="panel-header">
-                <span class="badge-soft">Servizi premium</span>
-                <h2>La tua Agenzia digitale di fiducia</h2>
-                <p>Gestisci spedizioni, attivazioni digitali e pratiche CAF in modo semplice e sempre aggiornato.</p>
+            <div class="auth-footer-links">
+                <span>Problemi con l’accesso? <a href="mailto:assistenza@agenziaplinio.it">Contatta l’assistenza</a></span>
+                <span>Consulta la <a href="#">Privacy Policy</a></span>
             </div>
-
-            <div class="panel-stats">
-                <div class="stat-card">
-                    <div class="stat-value">24/7</div>
-                    <span class="stat-label">Area clienti sempre disponibile</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">+1200</div>
-                    <span class="stat-label">Pratiche gestite ogni anno</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">100%</div>
-                    <span class="stat-label">Assistenza dedicata</span>
-                </div>
-            </div>
-
-            <div class="panel-features">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-shipping-fast"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h3>Spedizioni Smart</h3>
-                        <p>Richiedi ritiro pacchi, stampa etichette e traccia le consegne direttamente dal tuo profilo.</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-digital-tachograph"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h3>Attivazioni Digitali</h3>
-                        <p>SPID, PEC e firma digitale con notifiche in tempo reale sullo stato della pratica.</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h3>CAF & Patronato</h3>
-                        <p>Invia documenti, verifica appuntamenti e monitora le tue richieste fiscali senza code.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-footer">
-                <div class="contact-block">
-                    <i class="fas fa-headset"></i>
-                    <div>
-                        <span class="contact-label">Serve aiuto?</span>
-                        <a href="tel:+390815678321" class="contact-value">081 567 8321</a>
-                    </div>
-                </div>
-                <div class="contact-block">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <div>
-                        <span class="contact-label">Scrivici a</span>
-                        <a href="mailto:assistenza@agenziaplinio.it" class="contact-value">assistenza@agenziaplinio.it</a>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        </main>
     </div>
 
     <!-- Modal Registrazione -->
