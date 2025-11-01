@@ -1,0 +1,317 @@
+/* Styles specifici per la pagina di login */
+
+.login-page {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: var(--spacing-lg);
+    z-index: 1;
+}
+
+.login-card {
+    background: var(--white-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.login-header {
+    background: linear-gradient(135deg, var(--gray-100) 0%, var(--white-color) 100%);
+    padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+    text-align: center;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.login-header .logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-md);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.login-header h1 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-h3);
+    font-weight: 600;
+}
+
+.login-header p {
+    color: var(--gray-600);
+    margin-bottom: 0;
+    font-size: var(--font-size-sm);
+}
+
+.login-form {
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.password-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    transition: color var(--transition-fast);
+    z-index: 2;
+}
+
+.toggle-password:hover {
+    color: var(--primary-color);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.forgot-password {
+    font-size: var(--font-size-sm);
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.forgot-password:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.login-divider {
+    position: relative;
+    margin: var(--spacing-xl) 0;
+    text-align: center;
+    color: var(--gray-500);
+    font-size: var(--font-size-sm);
+}
+
+.login-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gray-300);
+    z-index: 1;
+}
+
+.login-divider span {
+    background: var(--white-color);
+    padding: 0 var(--spacing-md);
+    position: relative;
+    z-index: 2;
+}
+
+#alert-container {
+    margin-top: var(--spacing-lg);
+}
+
+/* Animazioni */
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.login-form .btn {
+    animation: fadeInScale 0.8s ease-out 0.3s both;
+}
+
+@keyframes fadeInScale {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Stati di focus migliorati per accessibilità */
+.login-form input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    transform: translateY(-1px);
+}
+
+.login-form .btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Effetti hover */
+.login-form .form-group {
+    position: relative;
+    overflow: hidden;
+}
+
+.login-form .form-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+.login-form .form-group:focus-within::before {
+    left: 100%;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: var(--spacing-md);
+    }
+    
+    .login-header {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    }
+    
+    .login-form {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .login-header .logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .login-header h1 {
+        font-size: var(--font-size-h4);
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .login-page {
+        background: linear-gradient(135deg, var(--dark-color) 0%, #1a1a1a 100%);
+    }
+    
+    .login-card {
+        background: var(--gray-800);
+        color: var(--white-color);
+    }
+    
+    .login-header {
+        background: linear-gradient(135deg, var(--gray-700) 0%, var(--gray-800) 100%);
+        border-bottom-color: var(--gray-600);
+    }
+    
+    .login-header p {
+        color: var(--gray-300);
+    }
+    
+    .login-form input {
+        background-color: var(--gray-700);
+        border-color: var(--gray-600);
+        color: var(--white-color);
+    }
+    
+    .login-form input:focus {
+        border-color: var(--primary-light);
+    }
+    
+    .login-divider {
+        color: var(--gray-400);
+    }
+    
+    .login-divider::before {
+        background: var(--gray-600);
+    }
+    
+    .login-divider span {
+        background: var(--gray-800);
+    }
+}
+
+/* Loading state */
+.btn.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    color: var(--white-color);
+}
+
+/* Print styles */
+@media print {
+    .login-page {
+        background: white;
+    }
+    
+    .login-container {
+        box-shadow: none;
+    }
+}
