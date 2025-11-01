@@ -9,6 +9,7 @@ error_reporting(E_ALL);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Area Clienti Agenzia Plinio</title>
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
@@ -248,6 +249,7 @@ error_reporting(E_ALL);
                         </div>
                     </div>
 
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/common.js"></script>
     <script src="assets/js/login.js"></script>
 </body>
