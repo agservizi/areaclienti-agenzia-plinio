@@ -19,6 +19,7 @@
     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
     
     <!-- CSS -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
     
