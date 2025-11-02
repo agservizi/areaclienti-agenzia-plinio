@@ -36,8 +36,8 @@ $path = $path === '' ? '/' : $path;
 
 $routes = [
     'GET' => [
-        '/' => [PageController::class, 'landing'],
-        '/auth/login' => [AuthController::class, 'showLogin'],
+        '/' => [AuthController::class, 'showLogin'],
+    '/auth/login' => [AuthController::class, 'showLogin'],
         '/auth/register' => [AuthController::class, 'showRegister'],
         '/client/dashboard' => [ClientController::class, 'dashboard'],
         '/client/profile' => [ClientController::class, 'profile'],

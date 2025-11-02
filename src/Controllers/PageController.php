@@ -20,9 +20,6 @@ class PageController
             }
             redirect('/client/dashboard');
         }
-
-        render('landing', [
-            'page_title' => 'Agenzia Plinio - Servizi digitali e logistici',
-        ], ['layout' => 'public']);
+        redirect('/auth/login');
     }
 }
