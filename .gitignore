@@ -1,6 +1,0 @@
-vendor/
-storage/files_encrypted/
-logs/
-.env
-.idea/
-.DS_Store
