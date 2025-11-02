@@ -8,6 +8,9 @@ if (!isAdmin($user)) {
     exit;
 }
 
+$pageTitle = 'Richieste';
+$adminActive = 'requests';
+
 $successMessage = null;
 $errorMessage = null;
 
@@ -36,12 +39,14 @@ try {
     $errorMessage = 'Impossibile caricare le richieste: ' . ($config['APP_DEBUG'] ? $exception->getMessage() : 'riprovare più tardi.');
 }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/admin_header.php';
 ?>
-<div class="container mt-5">
+<div class="admin-page">
     <div class="glass-container">
-        <h1 class="text-white mb-4">Richieste Servizi</h1>
-        <p>Gestisci lo stato delle pratiche inviate dai clienti.</p>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">Richieste servizi</h2>
+            <p class="admin-page-subtitle">Aggiorna gli stati delle pratiche inviate dai clienti.</p>
+        </div>
 
         <?php if ($successMessage): ?>
             <div class="alert alert-success" role="alert">
@@ -124,15 +129,6 @@ include __DIR__ . '/../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
-</div>
-<footer class="footer-glass mt-5">
-    <div class="container text-center">
-        <small>&copy; <span data-current-year></span> Agenzia Plinio - Richieste</small>
     </div>
-</footer>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/bootstrap.bundle.min.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/main.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/admin.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 </div>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/admin_footer.php'; ?>

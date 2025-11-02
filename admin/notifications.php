@@ -8,6 +8,9 @@ if (!isAdmin($user)) {
     exit;
 }
 
+$pageTitle = 'Notifiche';
+$adminActive = 'notifications';
+
 $successMessage = null;
 $errorMessage = null;
 
@@ -55,12 +58,14 @@ try {
     $errorMessage = 'Impossibile recuperare i dati: ' . ($config['APP_DEBUG'] ? $exception->getMessage() : 'riprovare più tardi.');
 }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/admin_header.php';
 ?>
-<div class="container mt-5">
+<div class="admin-page">
     <div class="glass-container">
-        <h1 class="text-white mb-4">Notifiche Clienti</h1>
-        <p>Invia comunicazioni ai clienti e gestisci lo stato di lettura dei messaggi.</p>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">Notifiche clienti</h2>
+            <p class="admin-page-subtitle">Invia comunicazioni e tieni traccia della lettura.</p>
+        </div>
 
         <?php if ($successMessage): ?>
             <div class="alert alert-success" role="alert">
@@ -147,15 +152,6 @@ include __DIR__ . '/../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
-</div>
-<footer class="footer-glass mt-5">
-    <div class="container text-center">
-        <small>&copy; <span data-current-year></span> Agenzia Plinio - Notifiche</small>
     </div>
-</footer>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/bootstrap.bundle.min.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/main.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/admin.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 </div>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/admin_footer.php'; ?>

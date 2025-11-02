@@ -8,6 +8,9 @@ if (!isAdmin($user)) {
     exit;
 }
 
+$pageTitle = 'Dashboard';
+$adminActive = 'dashboard';
+
 $stats = [];
 
 try {
@@ -27,12 +30,14 @@ try {
     $statsError = $exception->getMessage();
 }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/admin_header.php';
 ?>
-<div class="container mt-5">
+<div class="admin-page">
     <div class="glass-container">
-        <h1 class="text-white">Pannello Amministrativo</h1>
-        <p>Gestisci utenti, servizi e operazioni di back-office.</p>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">Pannello Amministrativo</h2>
+            <p class="admin-page-subtitle">Gestisci utenti, servizi e operazioni di back-office.</p>
+        </div>
 
         <?php if (!empty($statsError)): ?>
             <div class="alert alert-danger" role="alert">
@@ -146,14 +151,4 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
-<footer class="footer-glass mt-5">
-    <div class="container text-center">
-        <small>&copy; <span data-current-year></span> Agenzia Plinio - Amministrazione</small>
-    </div>
-</footer>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/bootstrap.bundle.min.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/main.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/admin.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-</div>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/admin_footer.php'; ?>

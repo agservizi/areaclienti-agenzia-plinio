@@ -8,6 +8,9 @@ if (!isAdmin($user)) {
     exit;
 }
 
+$pageTitle = 'Spedizioni';
+$adminActive = 'shipments';
+
 $successMessage = null;
 $errorMessage = null;
 
@@ -68,12 +71,14 @@ try {
     $errorMessage = 'Impossibile caricare le spedizioni: ' . ($config['APP_DEBUG'] ? $exception->getMessage() : 'riprovare più tardi.');
 }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/admin_header.php';
 ?>
-<div class="container mt-5">
+<div class="admin-page">
     <div class="glass-container">
-        <h1 class="text-white mb-4">Spedizioni Clienti</h1>
-        <p>Monitora lo stato degli invii logistici e aggiorna le informazioni di tracking.</p>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">Spedizioni clienti</h2>
+            <p class="admin-page-subtitle">Monitora le consegne e invia aggiornamenti di tracking.</p>
+        </div>
 
         <?php if ($successMessage): ?>
             <div class="alert alert-success" role="alert">
@@ -153,15 +158,6 @@ include __DIR__ . '/../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
-</div>
-<footer class="footer-glass mt-5">
-    <div class="container text-center">
-        <small>&copy; <span data-current-year></span> Agenzia Plinio - Spedizioni</small>
     </div>
-</footer>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/bootstrap.bundle.min.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/main.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
-<script src="<?php echo htmlspecialchars($assetBase . '/js/admin.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 </div>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/admin_footer.php'; ?>
