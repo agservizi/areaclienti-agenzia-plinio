@@ -109,6 +109,7 @@ if (!function_exists('auth_logout')) {
 if (!function_exists('current_user')) {
     function current_user(): ?array
     {
+        get_config();
         static $cachedUser;
         if ($cachedUser !== null) {
             return $cachedUser;
