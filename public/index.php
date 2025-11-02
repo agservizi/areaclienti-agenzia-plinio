@@ -34,6 +34,10 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $path = rtrim($path, '/');
 $path = $path === '' ? '/' : $path;
 
+if ($path === '/index.php' || $path === '/public/index.php') {
+    $path = '/';
+}
+
 $routes = [
     'GET' => [
         '/' => [AuthController::class, 'showLogin'],
