@@ -1,5 +1,9 @@
 <?php
 /** @var string $layout */
+
+$projectRoot = dirname(__DIR__, 3);
+$publicDir = $projectRoot . '/public';
+$hasLocalBootstrapBundle = is_file($publicDir . '/assets/bootstrap/bootstrap.bundle.min.js');
 ?>
 <?php if ($layout === 'admin'): ?>
     </div> <!-- /.admin-content -->
@@ -20,7 +24,11 @@
     </div>
 </footer>
 <?php endif; ?>
+<?php if ($hasLocalBootstrapBundle): ?>
 <script src="/assets/bootstrap/bootstrap.bundle.min.js"></script>
+<?php else: ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<?php endif; ?>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/auth.js"></script>
 <?php if ($layout !== 'public'): ?>

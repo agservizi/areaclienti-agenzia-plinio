@@ -3,6 +3,11 @@
 /** @var array $flashes */
 /** @var array|null $currentUser */
 /** @var string $layout */
+
+$projectRoot = dirname(__DIR__, 3);
+$publicDir = $projectRoot . '/public';
+$hasLocalBootstrap = is_file($publicDir . '/assets/bootstrap/bootstrap.min.css');
+$hasLocalBootstrapIcons = is_file($publicDir . '/assets/icons/bootstrap-icons.css');
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -10,8 +15,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($pageTitle) ?></title>
+    <?php if ($hasLocalBootstrap): ?>
     <link rel="stylesheet" href="/assets/bootstrap/bootstrap.min.css">
+    <?php else: ?>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <?php endif; ?>
+    <?php if ($hasLocalBootstrapIcons): ?>
     <link rel="stylesheet" href="/assets/icons/bootstrap-icons.css">
+    <?php else: ?>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha384-yc6fL6LZ7VONCmQtbU+N9+VA4p4MCEv0aKBslZx2drXr/7EQo1leChX2NDVYdom1" crossorigin="anonymous">
+    <?php endif; ?>
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
 <?php if ($layout === 'admin'): ?>
