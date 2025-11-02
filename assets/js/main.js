@@ -156,6 +156,84 @@
         });
     }
 
+    /**
+     * Manage collapsible admin sidebar with responsive behaviour.
+     */
+    function initAdminSidebar() {
+        const shell = qs('[data-admin-shell]');
+        if (!shell) {
+            return;
+        }
+
+        const toggle = qs('[data-sidebar-toggle]', shell);
+        const backdrop = qs('[data-sidebar-backdrop]', shell);
+        const desktopMq = window.matchMedia('(min-width: 992px)');
+        const body = document.body;
+
+        const setAria = (expanded) => {
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', String(expanded));
+            }
+        };
+
+        const closeMobile = () => {
+            shell.classList.remove('is-expanded');
+            body.classList.remove('sidebar-overlay-open');
+            setAria(false);
+        };
+
+        const syncState = () => {
+            if (desktopMq.matches) {
+                shell.classList.remove('is-expanded');
+                body.classList.remove('sidebar-overlay-open');
+                setAria(!shell.classList.contains('is-collapsed'));
+            } else {
+                shell.classList.remove('is-collapsed');
+                setAria(shell.classList.contains('is-expanded'));
+            }
+        };
+
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                if (desktopMq.matches) {
+                    const collapsed = shell.classList.toggle('is-collapsed');
+                    setAria(!collapsed);
+                } else {
+                    const expanded = shell.classList.toggle('is-expanded');
+                    body.classList.toggle('sidebar-overlay-open', expanded);
+                    setAria(expanded);
+                }
+            });
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', () => {
+                if (!desktopMq.matches) {
+                    closeMobile();
+                }
+            });
+        }
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !desktopMq.matches && shell.classList.contains('is-expanded')) {
+                closeMobile();
+            }
+        });
+
+        const handleViewportChange = () => {
+            closeMobile();
+            syncState();
+        };
+
+        if (typeof desktopMq.addEventListener === "function") {
+            desktopMq.addEventListener("change", handleViewportChange);
+        } else if (typeof desktopMq.addListener === "function") {
+            desktopMq.addListener(handleViewportChange);
+        }
+
+        syncState();
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         initParallax();
         initFetchSecurity();
@@ -163,5 +241,6 @@
         initAutoSubmitFilters();
         initAsyncForms();
         initCoverageCheck();
+        initAdminSidebar();
     });
 })();

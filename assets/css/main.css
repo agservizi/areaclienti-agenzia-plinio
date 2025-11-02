@@ -12,6 +12,7 @@
     --border-radius-md: 0.75rem;
     --border-radius-sm: 0.5rem;
     --shadow-soft: 0 20px 45px rgba(30, 64, 131, 0.18);
+    --header-height: 76px;
 }
 
 body {
@@ -124,6 +125,10 @@ main {
     box-shadow: 0 18px 35px rgba(42, 100, 214, 0.15);
 }
 
+.btn-outline-accent.btn-sm {
+    padding: 0.45rem 1rem;
+}
+
 .badge-soft-accent {
     background: rgba(42, 100, 214, 0.12);
     color: var(--color-accent);
@@ -189,6 +194,241 @@ main {
     font-weight: 600;
 }
 
+.admin-shell {
+    --sidebar-width: 280px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    min-height: calc(100vh - var(--header-height));
+    position: relative;
+}
+
+.admin-main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+}
+
+.admin-content {
+    flex: 1 1 auto;
+    transition: padding 0.3s ease;
+}
+
+.admin-topbar {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 1030;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid rgba(28, 42, 74, 0.08);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+.admin-topbar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.admin-topbar-info h1 {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.admin-topbar-user {
+    font-size: 0.85rem;
+}
+
+.admin-topbar-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.admin-topbar-actions .btn {
+    border-radius: var(--border-radius-sm);
+}
+
+.admin-topbar-toggle {
+    border: none;
+    background: rgba(42, 100, 214, 0.12);
+    border-radius: 999px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.admin-topbar-toggle:hover,
+.admin-topbar-toggle:focus {
+    background: rgba(42, 100, 214, 0.2);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.admin-topbar-toggle__icon {
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-text);
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.admin-topbar-toggle__icon::before,
+.admin-topbar-toggle__icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-text);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.admin-topbar-toggle__icon::before {
+    top: -6px;
+}
+
+.admin-topbar-toggle__icon::after {
+    top: 6px;
+}
+
+.sidebar-admin {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(236, 240, 250, 0.95));
+    border-right: 1px solid rgba(28, 42, 74, 0.08);
+    flex: 0 0 var(--sidebar-width);
+    width: var(--sidebar-width);
+    padding: 2rem 0 2rem;
+    position: sticky;
+    top: calc(var(--header-height) + 1rem);
+    max-height: calc(100vh - var(--header-height) - 1.5rem);
+    overflow-y: auto;
+    transition: width 0.3s ease, padding 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sidebar-admin__header {
+    padding-bottom: 0.5rem;
+}
+
+.sidebar-admin .nav-link {
+    color: var(--color-muted);
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1rem;
+    margin: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    font-weight: 500;
+}
+
+.sidebar-admin .nav-link:hover,
+.sidebar-admin .nav-link:focus,
+.sidebar-admin .nav-link.active {
+    background: rgba(42, 100, 214, 0.12);
+    color: var(--color-text);
+}
+
+.sidebar-admin .nav-link-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.sidebar-admin .nav-link-label {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.admin-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 42, 74, 0.28);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 1020;
+    pointer-events: none;
+}
+
+.admin-shell.is-collapsed {
+    --sidebar-width: 88px;
+}
+
+.admin-shell.is-collapsed .sidebar-admin {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.admin-shell.is-collapsed .sidebar-admin__header {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+}
+
+.admin-shell.is-collapsed .sidebar-admin .nav-link {
+    justify-content: center;
+    padding-inline: 0.5rem;
+}
+
+.admin-shell.is-collapsed .sidebar-admin .nav-link-label {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-8px);
+}
+
+body.sidebar-overlay-open {
+    overflow: hidden;
+}
+
+.admin-shell.is-expanded .admin-sidebar-backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-shell.is-expanded .admin-topbar-toggle__icon {
+    background: transparent;
+}
+
+.admin-shell.is-collapsed .admin-topbar-toggle__icon {
+    background: transparent;
+}
+
+.admin-shell.is-expanded .admin-topbar-toggle__icon::before {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.admin-shell.is-expanded .admin-topbar-toggle__icon::after {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+.admin-shell.is-collapsed .admin-topbar-toggle__icon::before {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.admin-shell.is-collapsed .admin-topbar-toggle__icon::after {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
 .table-dark-modern {
     --bs-table-bg: rgba(255, 255, 255, 0.95);
     --bs-table-striped-bg: rgba(237, 241, 252, 0.9);
@@ -242,32 +482,6 @@ main {
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 18px 35px rgba(42, 100, 214, 0.25);
-}
-
-.sidebar-admin {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(236, 240, 250, 0.95));
-    border-right: 1px solid rgba(28, 42, 74, 0.08);
-    min-height: 100vh;
-    position: sticky;
-    top: 0;
-    padding-top: 2rem;
-}
-
-.sidebar-admin .nav-link {
-    color: var(--color-muted);
-    border-radius: var(--border-radius-sm);
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.sidebar-admin .nav-link.active,
-.sidebar-admin .nav-link:hover {
-    background: rgba(42, 100, 214, 0.12);
-    color: var(--color-text);
 }
 
 .stat-card {
@@ -355,10 +569,47 @@ footer .footer-links a:hover {
         padding: 2rem;
     }
 
+    .admin-shell {
+        --sidebar-width: 0;
+        flex-direction: column;
+    min-height: initial;
+    }
+
     .sidebar-admin {
-        position: static;
-        min-height: initial;
-        margin-bottom: 2rem;
+        position: fixed;
+        top: calc(var(--header-height) + 0.75rem);
+        left: 1rem;
+        right: 1rem;
+        margin: 0 auto;
+        width: min(320px, 80vw);
+        max-height: calc(100vh - var(--header-height) - 1.5rem);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-soft);
+        transform: translateX(-120%);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        padding-inline: 1.5rem;
+        z-index: 1080;
+    }
+
+    .admin-shell.is-expanded .sidebar-admin {
+        transform: translateX(0);
+    }
+
+    .admin-shell.is-collapsed {
+        --sidebar-width: 0;
+    }
+
+    .admin-topbar {
+        position: sticky;
+        top: calc(var(--header-height) - 12px);
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding-inline: 1rem;
+    }
+
+    .admin-topbar-actions {
+        width: 100%;
+        justify-content: flex-start;
     }
 }
 
@@ -369,5 +620,28 @@ footer .footer-links a:hover {
 
     .hero-content {
         padding: 1.5rem;
+    }
+
+    .admin-topbar {
+        padding-inline: 0.75rem;
+    }
+
+    .admin-topbar-info h1 {
+        font-size: 1.05rem;
+    }
+
+    .admin-topbar-actions {
+        gap: 0.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-topbar,
+    .admin-topbar-toggle,
+    .sidebar-admin,
+    .admin-sidebar-backdrop,
+    .admin-content,
+    .sidebar-admin .nav-link-label {
+        transition: none !important;
     }
 }
