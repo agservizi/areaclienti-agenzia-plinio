@@ -1,0 +1,22 @@
+.dashboard-panel {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.dashboard-panel .card {
+    min-height: 180px;
+}
+
+.table-glass th,
+.table-glass td {
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.table-glass thead th {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.table-glass tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+}

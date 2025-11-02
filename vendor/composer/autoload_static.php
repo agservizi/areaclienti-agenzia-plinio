@@ -4,72 +4,77 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit55c0a607655712e61ba44bc8c1bda854
+class ComposerStaticInitabde07331752ded505f1222626be946a
 {
     public static $files = array (
-        '252328757f0932e8c8e1f6176d0f363c' => __DIR__ . '/../..' . '/src/Helpers/Env.php',
-        '2f9d356a72f503b877fcfeb4543cc3f8' => __DIR__ . '/../..' . '/src/Helpers/db.php',
-        'd3664b12155d99d42f855c06fe0d9cb9' => __DIR__ . '/../..' . '/src/Helpers/auth.php',
-        '60ed28e41cf2036edc578319cfd09113' => __DIR__ . '/../..' . '/src/Helpers/csrf.php',
-        '49a17fd4233586310f0851ce4ab5f83c' => __DIR__ . '/../..' . '/src/Helpers/validator.php',
-        '1abe3cad0df9ff3ba1061e43e6448d8d' => __DIR__ . '/../..' . '/src/Helpers/mailer.php',
-        '02b050ee046cedfd2af14df04b5fad19' => __DIR__ . '/../..' . '/src/Helpers/crypto.php',
-        '475063178700a775edd1d8478426c09a' => __DIR__ . '/../..' . '/src/Helpers/logger.php',
-        '46f56e3628e8cf7b7f7ad0f1ff2951c8' => __DIR__ . '/../..' . '/src/Helpers/view.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
         'P' => 
         array (
-            'PHPMailer\\PHPMailer\\' => 20,
+            'PhpOption\\' => 10,
         ),
-        'A' => 
+        'G' => 
         array (
-            'App\\' => 4,
+            'GrahamCampbell\\ResultType\\' => 26,
+        ),
+        'D' => 
+        array (
+            'Dotenv\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'PHPMailer\\PHPMailer\\' => 
+        'Symfony\\Polyfill\\Php80\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'App\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'PhpOption\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'GrahamCampbell\\ResultType\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
+        ),
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
     );
 
     public static $classMap = array (
-        'App\\Controllers\\AdminController' => __DIR__ . '/../..' . '/src/Controllers/AdminController.php',
-        'App\\Controllers\\ApiController' => __DIR__ . '/../..' . '/src/Controllers/ApiController.php',
-        'App\\Controllers\\AuthController' => __DIR__ . '/../..' . '/src/Controllers/AuthController.php',
-        'App\\Controllers\\ClientController' => __DIR__ . '/../..' . '/src/Controllers/ClientController.php',
-        'App\\Controllers\\PageController' => __DIR__ . '/../..' . '/src/Controllers/PageController.php',
-        'App\\Helpers\\Env' => __DIR__ . '/../..' . '/src/Helpers/Env.php',
-        'App\\Models\\CoverageCheck' => __DIR__ . '/../..' . '/src/Models/CoverageCheck.php',
-        'App\\Models\\FileStore' => __DIR__ . '/../..' . '/src/Models/FileStore.php',
-        'App\\Models\\SPIDRequest' => __DIR__ . '/../..' . '/src/Models/SPIDRequest.php',
-        'App\\Models\\Shipment' => __DIR__ . '/../..' . '/src/Models/Shipment.php',
-        'App\\Models\\SimOrder' => __DIR__ . '/../..' . '/src/Models/SimOrder.php',
-        'App\\Models\\Ticket' => __DIR__ . '/../..' . '/src/Models/Ticket.php',
-        'App\\Models\\User' => __DIR__ . '/../..' . '/src/Models/User.php',
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
-        'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
-        'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
-        'PHPMailer\\PHPMailer\\OAuthTokenProvider' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuthTokenProvider.php',
-        'PHPMailer\\PHPMailer\\PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/PHPMailer.php',
-        'PHPMailer\\PHPMailer\\POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/POP3.php',
-        'PHPMailer\\PHPMailer\\SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/SMTP.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit55c0a607655712e61ba44bc8c1bda854::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit55c0a607655712e61ba44bc8c1bda854::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit55c0a607655712e61ba44bc8c1bda854::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitabde07331752ded505f1222626be946a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitabde07331752ded505f1222626be946a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitabde07331752ded505f1222626be946a::$classMap;
 
         }, null, ClassLoader::class);
     }
