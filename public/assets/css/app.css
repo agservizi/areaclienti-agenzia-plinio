@@ -11,6 +11,23 @@ body {
     color: #1b1f24;
 }
 
+.layout-public,
+.layout-client {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-public .public-main,
+.layout-client .client-main {
+    flex: 1 0 auto;
+}
+
+.public-footer,
+.client-footer {
+    margin-top: auto;
+}
+
 .logo {
     font-weight: 600;
     color: var(--ap-primary);
