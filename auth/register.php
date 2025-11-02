@@ -106,11 +106,6 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
-<footer class="footer-glass mt-5">
-    <div class="container text-center">
-        <small>&copy; <span data-current-year></span> Agenzia Plinio</small>
-    </div>
-</footer>
 <script src="<?php echo htmlspecialchars($assetBase . '/js/bootstrap.bundle.min.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 <script src="<?php echo htmlspecialchars($assetBase . '/js/main.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 </div>

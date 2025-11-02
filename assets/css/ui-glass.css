@@ -178,16 +178,6 @@ body.ui-glass-app::before {
     background: rgba(255, 255, 255, 0.06);
 }
 
-.footer-glass,
-.ui-glass-footer {
-    background: rgba(5, 9, 26, 0.6);
-    border-top: 1px solid var(--ui-glass-border-soft);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    color: var(--ui-glass-muted);
-    padding: 1.75rem 0;
-}
-
 .alert {
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -267,7 +257,6 @@ a:hover {
     .ui-glass-surface,
     .glass-container,
     .navbar-glass,
-    .footer-glass,
     .table-responsive {
         background: rgba(15, 23, 42, 0.85);
     }
