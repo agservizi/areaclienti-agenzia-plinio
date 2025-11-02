@@ -67,6 +67,9 @@ body.ui-glass-app::before {
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     box-shadow: 0 18px 50px rgba(5, 9, 26, 0.35);
+    position: sticky;
+    top: 0;
+    z-index: 1050;
 }
 
 .navbar-glass .nav-link,

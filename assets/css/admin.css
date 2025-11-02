@@ -1,11 +1,13 @@
 .admin-app {
     --admin-sidebar-width: 268px;
     --admin-topbar-height: 68px;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
 .admin-shell {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -122,6 +124,8 @@
     flex-direction: column;
     min-width: 0;
     position: relative;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .admin-topbar {
@@ -220,6 +224,7 @@
     flex-direction: column;
     gap: clamp(1.5rem, 2vw, 2.5rem);
     min-width: 0;
+    overflow-y: auto;
 }
 
 .admin-page {
