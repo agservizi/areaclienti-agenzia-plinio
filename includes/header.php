@@ -4,13 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $config = include __DIR__ . '/../config/env.php';
-$projectRoot = basename(dirname(__DIR__));
-$appUrl = rtrim($config['APP_URL'], '/');
-
-$normalizedUrl = rtrim($appUrl, '/');
-$endsWithProject = substr($normalizedUrl, -strlen($projectRoot)) === $projectRoot;
-$basePath = $endsWithProject ? $normalizedUrl : $normalizedUrl . '/' . $projectRoot;
-$assetBase = $basePath . '/assets';
+$appUrl = rtrim((string) ($config['APP_URL'] ?? ''), '/');
+$basePath = $appUrl !== '' ? $appUrl : '';
+$assetBase = ($basePath !== '' ? $basePath : '') . '/assets';
 ?>
 <!DOCTYPE html>
 <html lang="it">
