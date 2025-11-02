@@ -31,33 +31,50 @@ class AuthController
 
         render('auth/login', [
             'page_title' => 'Accedi al portale',
-        ], ['layout' => 'public']);
+        ], [
+            'layout' => 'public',
+            'show_public_nav' => false,
+        ]);
     }
 
     public function login(): void
     {
         $data = sanitize($_POST);
-        $email = strtolower($data['email'] ?? '');
+        $identifierRaw = trim((string) ($data['identifier'] ?? ''));
         $password = $data['password'] ?? '';
+        $identifier = strtolower($identifierRaw);
+        $isEmail = filter_var($identifier, FILTER_VALIDATE_EMAIL) !== false;
 
-        if (!validate_email($email) || $password === '') {
+        if ($identifier === '' || $password === '') {
             flash('danger', 'Credenziali non valide');
             redirect('/auth/login');
         }
 
-        if (has_too_many_attempts($email)) {
+        if ($isEmail && has_too_many_attempts($identifier)) {
             flash('danger', 'Troppi tentativi di accesso. Riprova tra 15 minuti.');
             redirect('/auth/login');
         }
 
-        $user = User::findByEmail($email);
+        $user = $isEmail
+            ? User::findByEmail($identifier)
+            : User::findByUsername($identifierRaw);
+
+        if ($user && $user['role'] === 'admin' && $isEmail) {
+            flash('danger', 'Per l\'account amministratore utilizza lo username.');
+            redirect('/auth/login');
+        }
+
         if (!$user || !password_verify($password, $user['password'])) {
-            record_login_attempt($email);
+            if ($isEmail) {
+                record_login_attempt($identifier);
+            }
             flash('danger', 'Email o password errati');
             redirect('/auth/login');
         }
 
-        clear_login_attempts($email);
+        if ($isEmail) {
+            clear_login_attempts($identifier);
+        }
         login_user($user);
         User::touchLogin((int) $user['id']);
 
@@ -112,6 +129,7 @@ class AuthController
 
         try {
             $userId = User::create([
+                'username' => null,
                 'name' => $data['name'],
                 'email' => $email,
                 'password' => password_hash((string) $data['password'], PASSWORD_DEFAULT),

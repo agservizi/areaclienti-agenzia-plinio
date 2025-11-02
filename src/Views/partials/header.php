@@ -19,6 +19,7 @@
 <div class="admin-wrapper d-flex">
 <?php elseif ($layout === 'public'): ?>
 <body class="layout-public">
+<?php if (!empty($showPublicNav)): ?>
 <header class="public-header shadow-sm">
     <div class="container-xl d-flex align-items-center justify-content-between py-3">
         <a class="logo" href="/">Agenzia Plinio</a>
@@ -28,6 +29,7 @@
         </nav>
     </div>
 </header>
+<?php endif; ?>
 <main class="public-main container-xl py-5">
 <?php else: ?>
 <body class="layout-client">

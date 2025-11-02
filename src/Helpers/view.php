@@ -14,6 +14,7 @@ function render(string $view, array $data = [], array $options = []): void
     }
 
     $pageTitle = $data['page_title'] ?? ($options['title'] ?? 'Agenzia Plinio');
+    $showPublicNav = $options['show_public_nav'] ?? true;
     $currentUser = current_user();
     $flashes = $_SESSION['flashes'] ?? [];
     unset($_SESSION['flashes']);

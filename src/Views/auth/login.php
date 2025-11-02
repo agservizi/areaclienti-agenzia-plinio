@@ -6,8 +6,8 @@
                 <form method="post" action="/auth/login" novalidate>
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                     <div class="mb-3">
-                        <label class="form-label" for="email">Email</label>
-                        <input class="form-control" type="email" id="email" name="email" required autocomplete="email">
+                        <label class="form-label" for="identifier">Email o username</label>
+                        <input class="form-control" type="text" id="identifier" name="identifier" required autocomplete="username">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>

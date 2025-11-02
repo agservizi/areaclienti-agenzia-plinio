@@ -12,8 +12,9 @@ class User
     public static function create(array $data): int
     {
         $pdo = db();
-        $stmt = $pdo->prepare('INSERT INTO users (name, email, password, phone, role) VALUES (:name, :email, :password, :phone, :role)');
+        $stmt = $pdo->prepare('INSERT INTO users (username, name, email, password, phone, role) VALUES (:username, :name, :email, :password, :phone, :role)');
         $stmt->execute([
+            'username' => $data['username'] ?? null,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
@@ -37,6 +38,15 @@ class User
         $pdo = db();
         $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
         $stmt->execute(['email' => $email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ?: null;
+    }
+
+    public static function findByUsername(string $username): ?array
+    {
+        $pdo = db();
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+        $stmt->execute(['username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user ?: null;
     }

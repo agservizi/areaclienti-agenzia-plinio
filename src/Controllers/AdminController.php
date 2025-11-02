@@ -64,6 +64,11 @@ class AdminController
         if (!empty($data['email']) && !validate_email($data['email'])) {
             $errors['email'] = 'Email non valida';
         }
+        $username = trim((string) ($data['username'] ?? ''));
+        if ($username !== '' && User::findByUsername($username)) {
+            $errors['username'] = 'Username già in uso';
+        }
+
         if ($errors) {
             flash('danger', implode('<br>', $errors));
             redirect('/admin/users');
@@ -74,6 +79,7 @@ class AdminController
         }
 
         User::create([
+            'username' => $username !== '' ? $username : null,
             'name' => $data['name'],
             'email' => strtolower($data['email']),
             'password' => password_hash($data['password'] ?? bin2hex(random_bytes(6)), PASSWORD_DEFAULT),
