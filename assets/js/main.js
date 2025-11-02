@@ -157,81 +157,66 @@
     }
 
     /**
-     * Manage collapsible admin sidebar with responsive behaviour.
+     * Show and hide the admin sidebar on small screens without altering desktop layout.
      */
-    function initAdminSidebar() {
-        const shell = qs('[data-admin-shell]');
-        if (!shell) {
+    function initAdminSidebarToggle() {
+        const sidebar = qs('#adminSidebar');
+        const toggle = qs('[data-sidebar-toggle]');
+        if (!sidebar || !toggle) {
             return;
         }
 
-        const toggle = qs('[data-sidebar-toggle]', shell);
-        const backdrop = qs('[data-sidebar-backdrop]', shell);
-        const desktopMq = window.matchMedia('(min-width: 992px)');
         const body = document.body;
+        let overlay = qs('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay d-lg-none';
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(overlay);
+        }
 
-        const setAria = (expanded) => {
-            if (toggle) {
-                toggle.setAttribute('aria-expanded', String(expanded));
+        const closeSidebar = () => {
+            if (!body.classList.contains('sidebar-open')) {
+                return;
             }
+            body.classList.remove('sidebar-open');
+            toggle.setAttribute('aria-expanded', 'false');
         };
 
-        const closeMobile = () => {
-            shell.classList.remove('is-expanded');
-            body.classList.remove('sidebar-overlay-open');
-            setAria(false);
+        const openSidebar = () => {
+            body.classList.add('sidebar-open');
+            toggle.setAttribute('aria-expanded', 'true');
         };
 
-        const syncState = () => {
-            if (desktopMq.matches) {
-                shell.classList.remove('is-expanded');
-                body.classList.remove('sidebar-overlay-open');
-                setAria(!shell.classList.contains('is-collapsed'));
+        toggle.addEventListener('click', () => {
+            if (body.classList.contains('sidebar-open')) {
+                closeSidebar();
             } else {
-                shell.classList.remove('is-collapsed');
-                setAria(shell.classList.contains('is-expanded'));
-            }
-        };
-
-        if (toggle) {
-            toggle.addEventListener('click', () => {
-                if (desktopMq.matches) {
-                    const collapsed = shell.classList.toggle('is-collapsed');
-                    setAria(!collapsed);
-                } else {
-                    const expanded = shell.classList.toggle('is-expanded');
-                    body.classList.toggle('sidebar-overlay-open', expanded);
-                    setAria(expanded);
-                }
-            });
-        }
-
-        if (backdrop) {
-            backdrop.addEventListener('click', () => {
-                if (!desktopMq.matches) {
-                    closeMobile();
-                }
-            });
-        }
-
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !desktopMq.matches && shell.classList.contains('is-expanded')) {
-                closeMobile();
+                openSidebar();
             }
         });
 
-        const handleViewportChange = () => {
-            closeMobile();
-            syncState();
-        };
+        overlay.addEventListener('click', closeSidebar);
 
-        if (typeof desktopMq.addEventListener === "function") {
-            desktopMq.addEventListener("change", handleViewportChange);
-        } else if (typeof desktopMq.addListener === "function") {
-            desktopMq.addListener(handleViewportChange);
-        }
+        sidebar.querySelectorAll('a.nav-link').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 992) {
+                    closeSidebar();
+                }
+            });
+        });
 
-        syncState();
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 992) {
+                closeSidebar();
+            }
+        });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -241,6 +226,6 @@
         initAutoSubmitFilters();
         initAsyncForms();
         initCoverageCheck();
-        initAdminSidebar();
+        initAdminSidebarToggle();
     });
 })();
