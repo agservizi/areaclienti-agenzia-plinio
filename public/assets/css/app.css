@@ -1,0 +1,96 @@
+:root {
+    --ap-primary: #0d6efd;
+    --ap-primary-dark: #0b5ed7;
+    --ap-background: #f7f9fc;
+    --ap-accent: #e9f2ff;
+}
+
+body {
+    background-color: var(--ap-background);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1b1f24;
+}
+
+.logo {
+    font-weight: 600;
+    color: var(--ap-primary);
+    text-decoration: none;
+}
+
+.client-header,
+.public-header {
+    background-color: #ffffff;
+}
+
+.tile-card {
+    border-radius: 1rem;
+    background: #ffffff;
+}
+
+.service-card {
+    border-radius: 1rem;
+    background: #ffffff;
+}
+
+.landing-card {
+    border: 1px solid rgba(13, 110, 253, 0.1);
+}
+
+.layout-admin {
+    background-color: #f1f4f9;
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: var(--ap-primary-dark);
+    min-height: 100vh;
+}
+
+.admin-sidebar .nav-link {
+    border-radius: 0.75rem;
+    padding: 0.65rem 1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link:focus {
+    background-color: rgba(233, 242, 255, 0.2);
+    color: #ffffff;
+}
+
+.admin-topbar {
+    background: #ffffff;
+}
+
+.admin-content {
+    background: var(--ap-background);
+    border-radius: 2rem 0 0 0;
+}
+
+.alert-success {
+    background-color: rgba(25, 135, 84, 0.1);
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.btn-primary {
+    background-color: var(--ap-primary);
+    border-color: var(--ap-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--ap-primary-dark);
+    border-color: var(--ap-primary-dark);
+}
+
+.badge.bg-primary-subtle {
+    background-color: var(--ap-accent);
+}
+
+@media (max-width: 991px) {
+    .admin-sidebar {
+        display: none;
+    }
+}

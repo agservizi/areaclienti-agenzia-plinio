@@ -1,87 +1,81 @@
-# AG Servizi Area Personale
+# Portale Agenzia Plinio
 
-Portale PHP 8 per la gestione di clienti e operatori AG Servizi. Include area cliente, area admin, API interne, logging applicativo e storage opzionale cifrato per gli allegati.
+Portale web in PHP nativo per la gestione dei servizi dell'Agenzia Plinio. Include un'area riservata clienti e un pannello admin coerenti tra loro, con frontend sviluppato in Bootstrap locale e JavaScript vanilla.
 
 ## Requisiti
 
-- PHP 8.1+
-- Estensioni: pdo_mysql, sodium, json, iconv, fileinfo
-- MySQL 8+
-- Server web configurato per puntare alla cartella del progetto
+- PHP \>= 8.1 con estensioni `pdo_mysql`, `openssl` o `sodium`
+- Composer
+- MySQL/MariaDB
+- Server web configurato per puntare la root pubblica a `public/`
 
-## Configurazione rapida
+## Setup rapido
 
-1. Copiare `.env.example` (se presente) oppure creare `.env` impostando le variabili richieste (DB, app, storage). I valori vengono caricati automaticamente da `includes/config.php` e non sono salvati nel repository.
-2. Installare le dipendenze PHP native necessarie (nessun composer richiesto).
-3. Importare lo schema principale per un database vuoto:
-   ```bash
-   mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" < sql/install_full.sql
+1. **Installazione dipendenze**
+   ```powershell
+   composer install
    ```
-   In alternativa, eseguire `sql/migrations/20251101_fresh_install.sql` dopo aver dato `USE "$DB_NAME";`.
-4. Creare un admin iniziale:
-   ```bash
-   php scripts/seed_admin.php --email=admin@agservizi.test --password=Admin123!
+
+2. **Configurazione ambiente**
+   - Copia `.env.example` in `.env` e popola le variabili (l'app legge il file tramite `src/Helpers/Env.php`).
+   - Imposta i permessi di scrittura su `storage/` e `logs/`.
+   - Genera `APP_KEY` con 32 caratteri casuali (es. `php -r "echo bin2hex(random_bytes(16));"`).
+
+3. **Bootstrap e assets locali**
+   - Scarica l'ultima release di Bootstrap 5 (CSS + bundle JS) e posiziona i file in `public/assets/bootstrap/` come `bootstrap.min.css` e `bootstrap.bundle.min.js`.
+   - Scarica Bootstrap Icons (CSS + webfonts) e posiziona i file in `public/assets/icons/`.
+   - Rimuovi i file placeholder forniti in questa repo una volta sostituiti con gli asset ufficiali.
+
+4. **Database**
+   - Crea un database MySQL dedicato.
+   - Importa `migrations/schema.sql`.
+
+5. **Server locale**
+   ```powershell
+   php -S localhost:8080 -t public
    ```
-5. (Opzionale) Attivare lo storage cifrato filesystem:
-   ```bash
-   php scripts/generate_storage_key.php
-   ```
-   Impostare nel `.env`: `STORAGE_DRIVER=filesystem`.
-6. Configurare il server web (Apache/Nginx) per inviare tutte le richieste PHP alla root del progetto.
 
-## Struttura principale
+## Struttura principali cartelle
 
-- `admin/` pagine area amministrativa.
-- `client/` pagine area cliente.
-- `api/` endpoint REST interni con risposte JSON.
-- `includes/` configurazione, helper, autenticazione, reportistica.
-- `assets/` CSS, JS e vendor locali (Bootstrap incluso).
-- `templates/` componenti riutilizzabili.
-- `scripts/` utility CLI per chiavi e admin seed.
-- `uploads/` storage chiaro (driver mysql).
-- `storage/encrypted/` storage cifrato (driver filesystem).
-- `logs/` file di log con rotazione giornaliera automatica.
+```
+/public              Front controller e assets
+/src
+  controllers        Logica di routing
+  models             Accesso dati (PDO)
+  helpers            Funzioni di supporto (env, auth, csrf, crypto, mail)
+  views              Template PHP per client/admin
+/storage/files_encrypted  File caricati cifrati
+/logs                Log applicativi
+/migrations          Script SQL
+```
 
-## Database
+## Sicurezza chiave
 
-- Tabelle principali: `users`, `services`, `requests`.
-- `sql/schema.sql` contiene schema e dati demo per i servizi.
-- Script `scripts/seed_admin.php` crea o aggiorna l'admin rispetto all'email fornita.
-- Richieste e allegati vengono salvati in JSON all'interno della tabella `requests`.
+- Password memorizzate con `password_hash`
+- Sessioni configurate con cookie sicuri, HttpOnly e SameSite
+- Token CSRF globale per tutte le richieste POST
+- Validazione server-side con sanitizzazione output (`htmlspecialchars`)
+- File upload cifrati su disco con Sodium (fallback OpenSSL)
+- PHPMailer per invio email tramite SMTP configurato
 
-## Storage allegati
+## Script principali (MVP)
 
-- Driver `mysql` (default): file salvati nel percorso `uploads/` con nome random.
-- Driver `filesystem`: contenuto cifrato con `libsodium` in `storage/encrypted/{user_id}`.
-- Generare la chiave tramite `php scripts/generate_storage_key.php`; lo script crea `storage/.master.key` con permessi 600.
-- Download allegati gestiti da `request-download.php`, con controllo ruolo e proprietario.
+- Autenticazione (registrazione, login, logout)
+- Dashboard cliente con riepilogo servizi
+- Dashboard admin con KPIs, gestione utenti, pratiche, spedizioni e ticket
+- API JSON per coverage check e tracking
+- Gestione documenti con upload cifrato
+- Logging su file in `logs/app.log`
 
-## Sicurezza
+## Test e QA
 
-- Autenticazione basata su sessioni e ruoli (cliente/admin).
-- Password salvate con `password_hash` Argon2id.
-- CSRF token rigenerato e validato su tutte le form sensibili.
-- Log applicativi in `logs/` con rotazione automatica (mantiene `max_files` recenti in configurazione).
-- Upload filtrati per MIME, dimensione e, se attivo, cifrati.
+- Esegui `composer dump-autoload` dopo modifiche a helper
+- Usa account admin (ruolo `admin`) per verificare pannello gestori
+- Importa dati demo con script personalizzati in `migrations/`
 
-## Reportistica
+## Produzione
 
-- Pagina `admin/reports.php` con filtri per data, stato e servizio.
-- Esportazione CSV e PDF nativa (generatore minimale, nessuna dipendenza esterna).
-- Script riutilizzabili in `includes/reporting.php` per futuri report custom.
-
-## Checklist test manuali
-
-Vedere `docs/testing-checklist.md` per la lista completa. Suggerito almeno:
-
-- Registrazione utente e login.
-- Creazione richiesta con allegato (entrambi i driver storage).
-- Download allegato lato cliente e admin.
-- Aggiornamento stato richiesta da area admin.
-- Export CSV/PDF dalla pagina report.
-
-## Note operative
-
-- Log ruotano automaticamente: configurare `logs.max_files` in `includes/config.php` o `.env`.
-- In ambienti multi-server assicurarsi di condividere la chiave di cifratura in modo sicuro.
-- Per debug attivare `APP_DEBUG=true` nel `.env`; ricordarsi di disattivarlo in produzione.
+- Imposta `APP_ENV=production` e `APP_DEBUG=false`
+- Configura HTTPS obbligatorio (necessario per cookie `secure`)
+- Pianifica backup del DB e della cartella `storage/`
+- Sposta le chiavi di cifratura fuori dalla webroot quando possibile
