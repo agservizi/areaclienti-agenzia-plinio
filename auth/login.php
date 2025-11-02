@@ -7,6 +7,7 @@ require __DIR__ . '/../includes/db_connect.php';
 require __DIR__ . '/../includes/functions.php';
 
 $loginError = null;
+$identifier = '';
 
 function sanitizeLoginRecord(array $user): array
 {
@@ -22,19 +23,20 @@ function sanitizeLoginRecord(array $user): array
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $identifier = isset($_POST['identifier']) ? trim($_POST['identifier']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-    if ($email === '' || $password === '') {
-        $loginError = 'Inserisci email e password.';
+    if ($identifier === '' || $password === '') {
+        $loginError = 'Inserisci email o username e password.';
     } else {
-        $account = findUserByEmail($email, $pdo);
+        $account = findUserByIdentifier($identifier, $pdo);
 
         if (!$account || !password_verify($password, $account['password'])) {
-            recordLoginAttempt($pdo, $email, false);
+            recordLoginAttempt($pdo, $identifier, false);
             $loginError = 'Credenziali non valide.';
         } else {
-            recordLoginAttempt($pdo, $email, true);
+            $attemptKey = $account['email'] ?? $identifier;
+            recordLoginAttempt($pdo, $attemptKey, true);
 
             $updateLogin = $pdo->prepare('UPDATE users SET last_login_at = NOW() WHERE id = ?');
             $updateLogin->execute([$account['id']]);
@@ -69,8 +71,8 @@ include __DIR__ . '/../includes/header.php';
 
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label" for="email">Email</label>
-                        <input class="form-control" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                        <label class="form-label" for="identifier">Email o Username</label>
+                        <input class="form-control" type="text" id="identifier" name="identifier" value="<?php echo htmlspecialchars($identifier ?? '', ENT_QUOTES, 'UTF-8'); ?>" autocomplete="username" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>

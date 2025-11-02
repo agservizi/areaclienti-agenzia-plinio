@@ -20,6 +20,18 @@ function findUserByEmail(string $email, PDO $pdo): ?array
     return $user ?: null;
 }
 
+function findUserByIdentifier(string $identifier, PDO $pdo): ?array
+{
+    $stmt = $pdo->prepare(
+        'SELECT * FROM users WHERE email = :identifier OR username = :identifier LIMIT 1'
+    );
+    $stmt->execute(['identifier' => $identifier]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $user ?: null;
+}
+
 function getAllUsers(PDO $pdo): array
 {
     $stmt = $pdo->query('SELECT * FROM users ORDER BY created_at DESC');
