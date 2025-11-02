@@ -21,14 +21,14 @@ if (!validate_csrf_token($_SERVER['HTTP_X_CSRF_TOKEN'] ?? $_POST['_csrf_token'] 
 try {
     switch ($action) {
         case 'login':
-            $email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
-            $password = $_POST['password'] ?? '';
-            if (!$email || $password === '') {
+            $identifier = trim((string) ($_POST['identifier'] ?? $_POST['email'] ?? ''));
+            $password = (string) ($_POST['password'] ?? '');
+            if ($identifier === '' || $password === '') {
                 json_response(['success' => false, 'errors' => ['Credenziali non valide']], 422);
             }
 
-            if (!auth_login($email, $password)) {
-                json_response(['success' => false, 'errors' => ['Email o password errati']], 401);
+            if (!auth_login($identifier, $password)) {
+                json_response(['success' => false, 'errors' => ['Credenziali non valide']], 401);
             }
 
             json_response(['success' => true, 'redirect' => has_role(ROLE_ADMIN) ? '/admin/dashboard.php' : '/client/dashboard.php']);
@@ -53,7 +53,7 @@ try {
                 json_response(['success' => false, 'errors' => $result['errors'] ?? ['Registrazione fallita']], 422);
             }
 
-            auth_login($payload['email'], $payload['password']);
+        auth_login($payload['email'], $payload['password']);
             json_response(['success' => true, 'redirect' => '/client/dashboard.php']);
             break;
 

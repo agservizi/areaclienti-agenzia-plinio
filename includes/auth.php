@@ -11,19 +11,39 @@ const ROLE_ADMIN = 'admin';
 const ROLE_CLIENT = 'client';
 
 if (!function_exists('auth_login')) {
-    function auth_login(string $email, string $password): bool
+    function auth_login(string $identifier, string $password): bool
     {
-        $email = strtolower(trim($email));
-        if ($email === '' || $password === '') {
+        $identifier = trim($identifier);
+        if ($identifier === '' || $password === '') {
             return false;
         }
 
-        $stmt = db()->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
+        $pdo = db();
+        $user = null;
+        $lowerIdentifier = strtolower($identifier);
+
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+            $stmt->execute(['email' => $lowerIdentifier]);
+            $user = $stmt->fetch();
+
+            if ($user && $user['role'] === ROLE_ADMIN) {
+                log_event('Admin email login attempt blocked', ['user_id' => $user['id'], 'email' => $lowerIdentifier], 'warning');
+                return false;
+            }
+        } else {
+            $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username LIMIT 1');
+            $stmt->execute(['username' => $lowerIdentifier]);
+            $user = $stmt->fetch();
+        }
 
         if (!$user) {
-            log_event('Login attempt failed - user not found', ['email' => $email], 'warning');
+            log_event('Login attempt failed - user not found', ['identifier' => $identifier], 'warning');
+            return false;
+        }
+
+        if ($user['role'] === ROLE_ADMIN && ($user['username'] ?? '') === '') {
+            log_event('Admin account missing username', ['user_id' => $user['id']], 'error');
             return false;
         }
 
@@ -98,7 +118,7 @@ if (!function_exists('current_user')) {
             return null;
         }
 
-        $stmt = db()->prepare('SELECT id, role, name, email, phone, created_at FROM users WHERE id = :id LIMIT 1');
+    $stmt = db()->prepare('SELECT id, role, username, name, email, phone, created_at FROM users WHERE id = :id LIMIT 1');
         $stmt->execute(['id' => $userId]);
         $cachedUser = $stmt->fetch();
 

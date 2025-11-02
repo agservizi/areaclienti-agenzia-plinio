@@ -56,7 +56,7 @@ require_once __DIR__ . '/../includes/nav-client.php';
     <section class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h4 mb-0">Richieste recenti</h2>
-            <a class="btn btn-outline-light btn-sm" href="/client/requests.php">Visualizza tutte</a>
+            <a class="btn btn-outline-accent btn-sm" href="/client/requests.php">Visualizza tutte</a>
         </div>
         <?php $requests = $recentRequests; $isAdmin = false; include __DIR__ . '/../templates/partials/request-table.php'; ?>
     </section>
@@ -64,7 +64,7 @@ require_once __DIR__ . '/../includes/nav-client.php';
     <section>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h4 mb-0">Servizi consigliati</h2>
-            <a class="btn btn-outline-light btn-sm" href="/client/service-details.php">Esplora catalogo</a>
+            <a class="btn btn-outline-accent btn-sm" href="/client/service-details.php">Esplora catalogo</a>
         </div>
         <div class="row">
             <?php foreach ($topServices as $service): ?>

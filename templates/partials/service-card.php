@@ -16,7 +16,7 @@ declare(strict_types=1);
             <p class="text-muted mb-0"><?= escape(mb_strimwidth((string) ($service['description'] ?? ''), 0, 140, '…')) ?></p>
         </div>
         <div class="mt-4 d-flex justify-content-between align-items-center">
-            <a class="btn btn-outline-light" href="/client/service-details.php?slug=<?= urlencode((string) ($service['slug'] ?? '')) ?>">Dettagli</a>
+            <a class="btn btn-outline-accent" href="/client/service-details.php?slug=<?= urlencode((string) ($service['slug'] ?? '')) ?>">Dettagli</a>
             <a class="btn btn-accent" href="/client/requests.php?service=<?= urlencode((string) ($service['slug'] ?? '')) ?>">Richiedi</a>
         </div>
     </div>

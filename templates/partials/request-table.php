@@ -45,11 +45,11 @@ declare(strict_types=1);
                     <?php if (!empty($isAdmin)): ?>
                         <td><?= escape($request['user_email'] ?? '-') ?></td>
                         <td class="text-end">
-                            <a class="btn btn-sm btn-outline-light" href="/admin/manage-requests.php?id=<?= (int) $request['id'] ?>">Dettagli</a>
+                            <a class="btn btn-sm btn-outline-accent" href="/admin/manage-requests.php?id=<?= (int) $request['id'] ?>">Dettagli</a>
                         </td>
                     <?php else: ?>
                         <td class="text-end">
-                            <a class="btn btn-sm btn-outline-light" href="/client/requests.php?id=<?= (int) $request['id'] ?>">Visualizza</a>
+                            <a class="btn btn-sm btn-outline-accent" href="/client/requests.php?id=<?= (int) $request['id'] ?>">Visualizza</a>
                         </td>
                     <?php endif; ?>
                 </tr>

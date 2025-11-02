@@ -28,9 +28,9 @@ require_once __DIR__ . '/../includes/nav-client.php';
                 <ul class="list-unstyled mb-0">
                     <?php foreach ($services as $service): ?>
                         <li class="mb-2">
-                            <a href="?slug=<?= urlencode($service['slug']) ?>" class="d-flex justify-content-between align-items-center<?= $service['slug'] === $slug ? ' text-warning' : '' ?>">
+                            <a href="?slug=<?= urlencode($service['slug']) ?>" class="d-flex justify-content-between align-items-center<?= $service['slug'] === $slug ? ' text-accent fw-semibold' : '' ?>">
                                 <span><?= escape($service['title']) ?></span>
-                                <span class="badge bg-dark text-light"><?= escape($service['category']) ?></span>
+                                <span class="badge badge-soft-accent"><?= escape($service['category']) ?></span>
                             </a>
                         </li>
                     <?php endforeach; ?>

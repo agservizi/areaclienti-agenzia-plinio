@@ -89,7 +89,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
                                 <input type="hidden" name="action" value="toggle">
                                 <input type="hidden" name="service_id" value="<?= (int) $service['id'] ?>">
                                 <input type="hidden" name="enabled" value="<?= $service['enabled'] ? 0 : 1 ?>">
-                                <button class="btn btn-sm btn-outline-light" type="submit">
+                                <button class="btn btn-sm btn-outline-accent" type="submit">
                                     <?= $service['enabled'] ? 'Disattiva' : 'Attiva' ?>
                                 </button>
                             </form>

@@ -18,36 +18,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Utente non valido.';
         } else {
             $config = get_config();
-            switch ($action) {
-                case 'promote':
-                    $stmt = db()->prepare('UPDATE users SET role = :role WHERE id = :id');
-                    $stmt->execute(['role' => ROLE_ADMIN, 'id' => $userId]);
-                    $success = 'Utente promosso ad admin.';
-                    log_event('User promoted', ['user_id' => $userId]);
-                    break;
-                case 'demote':
-                    $stmt = db()->prepare('UPDATE users SET role = :role WHERE id = :id');
-                    $stmt->execute(['role' => ROLE_CLIENT, 'id' => $userId]);
-                    $success = 'Utente riportato a cliente.';
-                    log_event('User demoted', ['user_id' => $userId]);
-                    break;
-                case 'reset_password':
-                    $tempPassword = bin2hex(random_bytes(4));
-                    $hash = password_hash($tempPassword, $config['security']['password_algo']);
-                    $stmt = db()->prepare('UPDATE users SET password = :password WHERE id = :id');
-                    $stmt->execute(['password' => $hash, 'id' => $userId]);
-                    $success = 'Password temporanea: ' . $tempPassword;
-                    log_event('Password reset', ['user_id' => $userId]);
-                    break;
-                default:
-                    $errors[] = 'Azione non supportata.';
+            $userStmt = db()->prepare('SELECT id, role, username FROM users WHERE id = :id LIMIT 1');
+            $userStmt->execute(['id' => $userId]);
+            $userRecord = $userStmt->fetch();
+
+            if (!$userRecord) {
+                $errors[] = 'Utente non trovato.';
+            } else {
+                switch ($action) {
+                    case 'set_username':
+                        $usernameRaw = trim((string) ($_POST['username'] ?? ''));
+                        if ($usernameRaw === '') {
+                            if ($userRecord['role'] === ROLE_ADMIN) {
+                                $errors[] = 'Gli amministratori devono avere uno username.';
+                                break;
+                            }
+                            $stmt = db()->prepare('UPDATE users SET username = NULL WHERE id = :id');
+                            $stmt->execute(['id' => $userId]);
+                            $success = 'Username rimosso.';
+                            log_event('Username cleared', ['user_id' => $userId]);
+                            break;
+                        }
+
+                        $username = strtolower($usernameRaw);
+                        if (!preg_match('/^[a-z0-9_.-]{3,40}$/', $username)) {
+                            $errors[] = 'Lo username può contenere solo lettere, numeri, punto, trattino e underscore (3-40 caratteri).';
+                            break;
+                        }
+
+                        try {
+                            $stmt = db()->prepare('UPDATE users SET username = :username WHERE id = :id');
+                            $stmt->execute([
+                                'username' => $username,
+                                'id' => $userId,
+                            ]);
+                            $success = 'Username aggiornato.';
+                            log_event('Username updated', ['user_id' => $userId]);
+                        } catch (PDOException $exception) {
+                            if ((int) $exception->getCode() === 23000) {
+                                $errors[] = 'Username già utilizzato da un altro utente.';
+                            } else {
+                                $errors[] = 'Aggiornamento username non riuscito.';
+                            }
+                        }
+                        break;
+
+                    case 'promote':
+                        if (($userRecord['username'] ?? '') === '') {
+                            $errors[] = 'Imposta uno username prima di promuovere l’utente ad admin.';
+                            break;
+                        }
+                        $stmt = db()->prepare('UPDATE users SET role = :role WHERE id = :id');
+                        $stmt->execute(['role' => ROLE_ADMIN, 'id' => $userId]);
+                        $success = 'Utente promosso ad admin.';
+                        log_event('User promoted', ['user_id' => $userId]);
+                        break;
+
+                    case 'demote':
+                        $stmt = db()->prepare('UPDATE users SET role = :role WHERE id = :id');
+                        $stmt->execute(['role' => ROLE_CLIENT, 'id' => $userId]);
+                        $success = 'Utente riportato a cliente.';
+                        log_event('User demoted', ['user_id' => $userId]);
+                        break;
+
+                    case 'reset_password':
+                        $tempPassword = bin2hex(random_bytes(4));
+                        $hash = password_hash($tempPassword, $config['security']['password_algo']);
+                        $stmt = db()->prepare('UPDATE users SET password = :password WHERE id = :id');
+                        $stmt->execute(['password' => $hash, 'id' => $userId]);
+                        $success = 'Password temporanea: ' . $tempPassword;
+                        log_event('Password reset', ['user_id' => $userId]);
+                        break;
+
+                    default:
+                        $errors[] = 'Azione non supportata.';
+                }
             }
         }
     }
 }
 
 $search = sanitize_text($_GET['q'] ?? '');
-$query = 'SELECT id, role, name, email, phone, created_at FROM users WHERE 1=1';
+$query = 'SELECT id, role, username, name, email, phone, created_at FROM users WHERE 1=1';
 $params = [];
 if ($search) {
     $query .= ' AND (email LIKE :term OR name LIKE :term)';
@@ -75,7 +127,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
 
 <form class="table-controls mb-4" method="get">
     <input class="form-control" type="search" name="q" placeholder="Cerca per nome o email" value="<?= escape($search) ?>">
-    <button class="btn btn-outline-light" type="submit">Cerca</button>
+    <button class="btn btn-outline-accent" type="submit">Cerca</button>
 </form>
 
 <div class="table-responsive">
@@ -85,6 +137,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
             <th>ID</th>
             <th>Nome</th>
             <th>Email</th>
+            <th>Username</th>
             <th>Ruolo</th>
             <th>Telefono</th>
             <th>Registrato</th>
@@ -98,6 +151,18 @@ require_once __DIR__ . '/../includes/nav-admin.php';
                 <td><?= escape($user['name'] ?? '-') ?></td>
                 <td><?= escape($user['email']) ?></td>
                 <td>
+                    <form method="post" class="d-flex gap-2 align-items-center mb-2">
+                        <input type="hidden" name="_csrf_token" value="<?= escape(get_csrf_token()) ?>">
+                        <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
+                        <input type="hidden" name="action" value="set_username">
+                        <input class="form-control form-control-sm" type="text" name="username" value="<?= escape($user['username'] ?? '') ?>" placeholder="username" autocomplete="off">
+                        <button class="btn btn-sm btn-outline-accent" type="submit">Salva</button>
+                    </form>
+                    <?php if ($user['role'] === ROLE_ADMIN): ?>
+                        <small class="text-muted">Richiesto per l’accesso amministratore.</small>
+                    <?php endif; ?>
+                </td>
+                <td>
                     <span class="badge-status <?= $user['role'] === ROLE_ADMIN ? 'processing' : 'completed' ?>">
                         <?= $user['role'] === ROLE_ADMIN ? 'Admin' : 'Cliente' ?>
                     </span>
@@ -109,7 +174,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
                         <input type="hidden" name="_csrf_token" value="<?= escape(get_csrf_token()) ?>">
                         <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
                         <input type="hidden" name="action" value="<?= $user['role'] === ROLE_ADMIN ? 'demote' : 'promote' ?>">
-                        <button class="btn btn-sm btn-outline-light" type="submit">
+                        <button class="btn btn-sm btn-outline-accent" type="submit">
                             <?= $user['role'] === ROLE_ADMIN ? 'Rimuovi admin' : 'Promuovi admin' ?>
                         </button>
                     </form>
@@ -117,7 +182,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
                         <input type="hidden" name="_csrf_token" value="<?= escape(get_csrf_token()) ?>">
                         <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
                         <input type="hidden" name="action" value="reset_password">
-                        <button class="btn btn-sm btn-outline-light" type="submit">Reset password</button>
+                        <button class="btn btn-sm btn-outline-accent" type="submit">Reset password</button>
                     </form>
                 </td>
             </tr>

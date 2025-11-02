@@ -25,7 +25,7 @@ $user = current_user();
             <p class="text-muted mb-0">Gestisci i tuoi servizi e le richieste in un’unica area personale.</p>
         </div>
         <div class="d-flex gap-2">
-            <a class="btn btn-outline-light" href="/client/profile.php">Profilo</a>
+            <a class="btn btn-outline-accent" href="/client/profile.php">Profilo</a>
             <a class="btn btn-accent" href="/client/requests.php">Nuova richiesta</a>
         </div>
     </div>

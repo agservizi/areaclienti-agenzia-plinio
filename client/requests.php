@@ -38,7 +38,7 @@ require_once __DIR__ . '/../includes/nav-client.php';
                     <p class="text-muted mb-1">Stato: <span class="badge-status <?= escape($selectedRequest['status'] ?? '') ?>"><?= escape(ucfirst((string) $selectedRequest['status'])) ?></span></p>
                     <p class="text-muted mb-3">Creata il: <?= escape(format_date($selectedRequest['created_at'] ?? null)) ?></p>
                     <h4 class="h6">Dati inviati</h4>
-                    <pre class="bg-dark p-3 rounded text-light small"><?= escape($selectedRequest['data']) ?></pre>
+                    <div class="code-panel small mb-0"><?= escape($selectedRequest['data']) ?></div>
                     <?php if (!empty($selectedRequest['attachments'])): ?>
                         <h4 class="h6 mt-3">Allegati</h4>
                         <ul class="text-muted small">
@@ -52,7 +52,7 @@ require_once __DIR__ . '/../includes/nav-client.php';
                                 $label = $file['original'] ?? $file['filename'] ?? 'Allegato';
                                 $url = sprintf('/request-download.php?request_id=%d&file=%d', (int) $selectedRequest['id'], (int) $index);
                                 ?>
-                                <li><a class="link-light" href="<?= $url ?>" target="_blank" rel="noopener"><?= escape($label) ?></a></li>
+                                <li><a class="link-primary" href="<?= $url ?>" target="_blank" rel="noopener"><?= escape($label) ?></a></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
@@ -109,7 +109,7 @@ require_once __DIR__ . '/../includes/nav-client.php';
                         </select>
                     </div>
                     <div class="d-grid">
-                        <button class="btn btn-outline-light" type="submit">Verifica</button>
+                        <button class="btn btn-outline-accent" type="submit">Verifica</button>
                     </div>
                 </form>
                 <div id="coverage-result"></div>

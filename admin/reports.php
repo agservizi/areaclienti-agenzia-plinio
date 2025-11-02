@@ -86,7 +86,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
             </option>
         <?php endforeach; ?>
     </select>
-    <button class="btn btn-outline-light" type="submit">Aggiorna</button>
+    <button class="btn btn-outline-accent" type="submit">Aggiorna</button>
 </form>
 
 <div class="row g-4 mb-5">
@@ -138,8 +138,8 @@ require_once __DIR__ . '/../includes/nav-admin.php';
         <input type="hidden" name="date_from" value="<?= escape($filters['date_from']) ?>">
         <input type="hidden" name="date_to" value="<?= escape($filters['date_to']) ?>">
         <input type="hidden" name="export" value="1">
-        <button class="btn btn-sm btn-outline-light" type="submit" name="format" value="csv">Esporta CSV</button>
-        <button class="btn btn-sm btn-outline-light" type="submit" name="format" value="pdf">Esporta PDF</button>
+    <button class="btn btn-sm btn-outline-accent" type="submit" name="format" value="csv">Esporta CSV</button>
+    <button class="btn btn-sm btn-outline-accent" type="submit" name="format" value="pdf">Esporta PDF</button>
     </form>
 </div>
 

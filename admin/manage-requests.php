@@ -98,8 +98,8 @@ require_once __DIR__ . '/../includes/nav-admin.php';
         <p class="text-muted mb-1">Utente: <?= escape($selectedRequest['user_email']) ?></p>
         <p class="text-muted mb-1">Servizio: <?= escape($selectedRequest['service_title']) ?></p>
         <p class="text-muted">Stato attuale: <span class="badge-status <?= escape($selectedRequest['status']) ?>"><?= escape($selectedRequest['status']) ?></span></p>
-        <h3 class="h6 mt-4">Dati inviati</h3>
-        <pre class="bg-dark p-3 rounded text-light small"><?= escape($selectedRequest['data']) ?></pre>
+    <h3 class="h6 mt-4">Dati inviati</h3>
+    <div class="code-panel small mb-0"><?= escape($selectedRequest['data']) ?></div>
         <?php if ($selectedRequest['attachments']): ?>
             <h3 class="h6 mt-3">Allegati</h3>
             <ul class="text-muted small">
@@ -113,7 +113,7 @@ require_once __DIR__ . '/../includes/nav-admin.php';
                     $label = $file['original'] ?? $file['filename'] ?? 'Allegato';
                     $url = sprintf('/request-download.php?request_id=%d&file=%d', (int) $selectedRequest['id'], (int) $index);
                     ?>
-                    <li><a class="link-light" href="<?= $url ?>" target="_blank" rel="noopener"><?= escape($label) ?></a></li>
+                    <li><a class="link-primary" href="<?= $url ?>" target="_blank" rel="noopener"><?= escape($label) ?></a></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>

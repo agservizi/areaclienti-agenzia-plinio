@@ -41,12 +41,13 @@ $pageTitle = 'Accedi | ' . $config['app']['name'];
                 <form method="post" action="/api/auth.php?action=login" data-async="true" class="needs-validation" novalidate>
                     <input type="hidden" name="_csrf_token" value="<?= escape(get_csrf_token()) ?>">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <label for="identifier" class="form-label">Email (clienti) o username (admin)</label>
+                        <input type="text" class="form-control" id="identifier" name="identifier" autocomplete="username" required>
+                        <small class="text-muted">Gli amministratori devono usare lo username assegnato.</small>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-accent">Accedi</button>

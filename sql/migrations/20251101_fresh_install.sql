@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     role ENUM('admin','client') NOT NULL DEFAULT 'client',
+    username VARCHAR(60) NULL UNIQUE,
     name VARCHAR(120) NOT NULL,
     email VARCHAR(190) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
