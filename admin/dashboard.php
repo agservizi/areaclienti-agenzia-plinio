@@ -30,125 +30,303 @@ try {
     $statsError = $exception->getMessage();
 }
 
+$formatStat = static function ($value) {
+    return number_format((int) $value, 0, ',', '.');
+};
+
+$now = new DateTime();
+$todayDate = $now->format('d/m/Y');
+$currentTime = $now->format('H:i');
+$adminWelcome = $_SESSION['user']['name'] ?? ($_SESSION['user']['username'] ?? 'Amministratore');
+$openItems = (int) ($stats['requests_pending'] ?? 0) + (int) ($stats['tickets_open'] ?? 0) + (int) ($stats['spid_pending'] ?? 0) + (int) ($stats['sim_processing'] ?? 0);
+
 include __DIR__ . '/../includes/admin_header.php';
+
+$summaryMetrics = [
+    [
+        'label' => 'Utenti registrati',
+        'value' => $stats['users'] ?? 0,
+        'icon' => 'bi-people',
+        'hint' => 'Account presenti nel portale',
+        'href' => $basePath . '/admin/utenti.php',
+        'action' => 'Gestisci utenti',
+    ],
+    [
+        'label' => 'Servizi attivi',
+        'value' => $stats['services'] ?? 0,
+        'icon' => 'bi-briefcase',
+        'hint' => 'Offerte disponibili per i clienti',
+        'href' => $basePath . '/admin/servizi.php',
+        'action' => 'Aggiorna catalogo',
+    ],
+    [
+        'label' => 'Richieste in attesa',
+        'value' => $stats['requests_pending'] ?? 0,
+        'icon' => 'bi-inboxes',
+        'hint' => 'Pratiche da assegnare o concludere',
+        'href' => $basePath . '/admin/requests.php',
+        'action' => 'Apri richieste',
+    ],
+    [
+        'label' => 'Ticket aperti',
+        'value' => $stats['tickets_open'] ?? 0,
+        'icon' => 'bi-life-preserver',
+        'hint' => 'Supporto clienti in corso',
+        'href' => $basePath . '/admin/tickets.php',
+        'action' => 'Monitora ticket',
+    ],
+    [
+        'label' => 'Notifiche da leggere',
+        'value' => $stats['notifications_unread'] ?? 0,
+        'icon' => 'bi-bell',
+        'hint' => 'Messaggi in attesa di lettura',
+        'href' => $basePath . '/admin/notifications.php',
+        'action' => 'Gestisci notifiche',
+    ],
+    [
+        'label' => 'Log odierni',
+        'value' => $stats['audit_today'] ?? 0,
+        'icon' => 'bi-clipboard-data',
+        'hint' => 'Eventi registrati nelle ultime ore',
+        'href' => $basePath . '/admin/audit_logs.php',
+        'action' => 'Consulta audit',
+    ],
+];
+
+$quickActions = [
+    [
+        'label' => 'Nuova notifica',
+        'icon' => 'bi-megaphone',
+        'href' => $basePath . '/admin/notifications.php',
+    ],
+    [
+        'label' => 'Aggiungi servizio',
+        'icon' => 'bi-plus-circle',
+        'href' => $basePath . '/admin/servizi.php',
+    ],
+    [
+        'label' => 'Verifica richieste',
+        'icon' => 'bi-ui-checks',
+        'href' => $basePath . '/admin/requests.php',
+    ],
+    [
+        'label' => 'Esporta audit',
+        'icon' => 'bi-arrow-down-circle',
+        'href' => $basePath . '/admin/audit_logs.php?limit=250',
+    ],
+];
+
+$operationsHighlights = [
+    [
+        'label' => 'Richieste da gestire',
+        'hint' => 'Clienti in attesa di risposta',
+        'value' => $stats['requests_pending'] ?? 0,
+        'href' => $basePath . '/admin/requests.php',
+        'linkLabel' => 'Apri richieste',
+    ],
+    [
+        'label' => 'Ticket aperti',
+        'hint' => 'Assistenza tecnica da seguire',
+        'value' => $stats['tickets_open'] ?? 0,
+        'href' => $basePath . '/admin/tickets.php',
+        'linkLabel' => 'Vai ai ticket',
+    ],
+    [
+        'label' => 'Notifiche non lette',
+        'hint' => 'Messaggi destinati ai clienti',
+        'value' => $stats['notifications_unread'] ?? 0,
+        'href' => $basePath . '/admin/notifications.php',
+        'linkLabel' => 'Gestisci notifiche',
+    ],
+];
+
+$monitoringHighlights = [
+    [
+        'label' => 'Pratiche SPID in revisione',
+        'hint' => 'Richieste identità digitale da completare',
+        'value' => $stats['spid_pending'] ?? 0,
+        'href' => $basePath . '/admin/spid_requests.php',
+        'linkLabel' => 'Apri pratiche',
+    ],
+    [
+        'label' => 'Ordini SIM in lavorazione',
+        'hint' => 'Attivazioni telefono e connettività',
+        'value' => $stats['sim_processing'] ?? 0,
+        'href' => $basePath . '/admin/sim_orders.php',
+        'linkLabel' => 'Gestisci ordini',
+    ],
+    [
+        'label' => 'Spedizioni in transito',
+        'hint' => 'Invii logistici ancora da consegnare',
+        'value' => $stats['shipments_transit'] ?? 0,
+        'href' => $basePath . '/admin/shipments.php',
+        'linkLabel' => 'Monitora spedizioni',
+    ],
+];
+
+$securityHighlights = [
+    [
+        'label' => 'Tentativi login registrati',
+        'hint' => 'Verificare eventuali blocchi',
+        'value' => $stats['login_attempts'] ?? 0,
+        'href' => $basePath . '/admin/login_attempts.php',
+        'linkLabel' => 'Controlla accessi',
+    ],
+    [
+        'label' => 'Documenti condivisi',
+        'hint' => 'File disponibili nell\'area clienti',
+        'value' => $stats['files_shared'] ?? 0,
+        'href' => $basePath . '/admin/files.php',
+        'linkLabel' => 'Vai ai documenti',
+    ],
+    [
+        'label' => 'Log di oggi',
+        'hint' => 'Eventi di audit registrati',
+        'value' => $stats['audit_today'] ?? 0,
+        'href' => $basePath . '/admin/audit_logs.php',
+        'linkLabel' => 'Consulta audit',
+    ],
+];
 ?>
 <div class="admin-page">
-    <div class="glass-container">
-        <div class="admin-page-header">
-            <h2 class="admin-page-title">Pannello Amministrativo</h2>
-            <p class="admin-page-subtitle">Gestisci utenti, servizi e operazioni di back-office.</p>
-        </div>
-
-        <?php if (!empty($statsError)): ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo htmlspecialchars($statsError, ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-        <?php endif; ?>
-
-        <div class="row mt-4 dashboard-panel">
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Utenti</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['users'] ?? '-'; ?></p>
-                    <p>Gestisci anagrafiche e ruoli</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/utenti.php', ENT_QUOTES, 'UTF-8'); ?>">Apri</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Servizi</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['services'] ?? '-'; ?></p>
-                    <p>Catalogo servizi attivi</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/servizi.php', ENT_QUOTES, 'UTF-8'); ?>">Gestisci</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Richieste aperte</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['requests_pending'] ?? '-'; ?></p>
-                    <p>Richieste servizi da evadere</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/requests.php', ENT_QUOTES, 'UTF-8'); ?>">Dettagli</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Ticket aperti</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['tickets_open'] ?? '-'; ?></p>
-                    <p>Supporto clienti</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/tickets.php', ENT_QUOTES, 'UTF-8'); ?>">Assistenza</a>
-                </div>
+    <section class="admin-dashboard-hero glass-container">
+        <div class="admin-dashboard-hero-copy">
+            <p class="admin-hero-greeting">Benvenuto, <?php echo htmlspecialchars($adminWelcome, ENT_QUOTES, 'UTF-8'); ?></p>
+            <h2>Panoramica operativa del portale</h2>
+            <p class="admin-hero-subtitle">Tieniti aggiornato su stati, richieste e indicatori chiave delle attività digitali dell'agenzia.</p>
+            <div class="admin-hero-meta">
+                <span class="admin-hero-pill"><i class="bi bi-calendar-event"></i> <?php echo htmlspecialchars($todayDate, ENT_QUOTES, 'UTF-8'); ?></span>
+                <span class="admin-hero-pill"><i class="bi bi-clock-history"></i> Aggiornato alle <?php echo htmlspecialchars($currentTime, ENT_QUOTES, 'UTF-8'); ?></span>
+                <span class="admin-hero-pill"><i class="bi bi-lightning-charge"></i> <?php echo htmlspecialchars($formatStat($openItems), ENT_QUOTES, 'UTF-8'); ?> attività aperte</span>
             </div>
         </div>
-
-        <div class="row mt-4 dashboard-panel">
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Pratiche SPID</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['spid_pending'] ?? '-'; ?></p>
-                    <p>Richieste in attesa</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/spid_requests.php', ENT_QUOTES, 'UTF-8'); ?>">Gestisci</a>
-                </div>
+        <div class="admin-dashboard-hero-side">
+            <div class="admin-hero-highlight">
+                <span class="admin-hero-highlight-label">Notifiche non lette</span>
+                <span class="admin-hero-highlight-value"><?php echo htmlspecialchars($formatStat($stats['notifications_unread'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></span>
+                <a class="btn btn-sm btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/notifications.php', ENT_QUOTES, 'UTF-8'); ?>">
+                    <i class="bi bi-bell"></i>
+                    Gestisci notifiche
+                </a>
             </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Ordini SIM</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['sim_processing'] ?? '-'; ?></p>
-                    <p>Pratiche telefonia da processare</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/sim_orders.php', ENT_QUOTES, 'UTF-8'); ?>">Vai</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Spedizioni attive</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['shipments_transit'] ?? '-'; ?></p>
-                    <p>Monitoraggio logistica</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/shipments.php', ENT_QUOTES, 'UTF-8'); ?>">Monitora</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Notifiche</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['notifications_unread'] ?? '-'; ?></p>
-                    <p>Messaggi non letti dai clienti</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/notifications.php', ENT_QUOTES, 'UTF-8'); ?>">Invia</a>
-                </div>
+            <div class="admin-hero-highlight">
+                <span class="admin-hero-highlight-label">Verifiche copertura totali</span>
+                <span class="admin-hero-highlight-value"><?php echo htmlspecialchars($formatStat($stats['coverage_checks'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></span>
+                <a class="btn btn-sm btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/coverage_checks.php', ENT_QUOTES, 'UTF-8'); ?>">
+                    <i class="bi bi-rss"></i>
+                    Consulta storico
+                </a>
             </div>
         </div>
+    </section>
 
-        <div class="row mt-4 dashboard-panel">
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Audit odierni</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['audit_today'] ?? '-'; ?></p>
-                    <p>Eventi registrati oggi</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/audit_logs.php', ENT_QUOTES, 'UTF-8'); ?>">Storico</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Verifiche copertura</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['coverage_checks'] ?? '-'; ?></p>
-                    <p>Numero totale richieste</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/coverage_checks.php', ENT_QUOTES, 'UTF-8'); ?>">Consulta</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Tentativi login</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['login_attempts'] ?? '-'; ?></p>
-                    <p>Contatori attivi</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/login_attempts.php', ENT_QUOTES, 'UTF-8'); ?>">Gestisci</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card glass-container h-100">
-                    <h5>Documenti</h5>
-                    <p class="display-6 fw-bold mb-2"><?php echo $stats['files_shared'] ?? '-'; ?></p>
-                    <p>File condivisi totali</p>
-                    <a class="btn btn-outline-light" href="<?php echo htmlspecialchars($basePath . '/admin/files.php', ENT_QUOTES, 'UTF-8'); ?>">Apri</a>
-                </div>
-            </div>
+    <?php if (!empty($statsError)): ?>
+        <div class="alert alert-danger mt-3" role="alert">
+            <?php echo htmlspecialchars($statsError, ENT_QUOTES, 'UTF-8'); ?>
         </div>
+    <?php endif; ?>
+
+    <div class="admin-quick-actions">
+        <span class="admin-quick-actions-title">Azioni rapide</span>
+        <div class="admin-quick-actions-list">
+            <?php foreach ($quickActions as $action): ?>
+                <a class="btn-ghost" href="<?php echo htmlspecialchars($action['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <i class="bi <?php echo htmlspecialchars($action['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i>
+                    <span><?php echo htmlspecialchars($action['label'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="admin-summary-grid">
+        <?php foreach ($summaryMetrics as $metric): ?>
+            <div class="admin-summary-card">
+                <div class="admin-summary-card-top">
+                    <span class="admin-summary-card-icon"><i class="bi <?php echo htmlspecialchars($metric['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i></span>
+                    <p class="admin-summary-card-title"><?php echo htmlspecialchars($metric['label'], ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <div class="admin-summary-card-value"><?php echo htmlspecialchars($formatStat($metric['value']), ENT_QUOTES, 'UTF-8'); ?></div>
+                <p class="admin-summary-card-hint"><?php echo htmlspecialchars($metric['hint'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <a class="admin-summary-card-action" href="<?php echo htmlspecialchars($metric['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <span><?php echo htmlspecialchars($metric['action'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <i class="bi bi-arrow-right-short"></i>
+                </a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="admin-panels-grid">
+        <section class="admin-panel">
+            <div class="admin-panel-header">
+                <h3 class="admin-panel-title">Front office</h3>
+                <p class="admin-panel-subtitle">Richieste e assistenza clienti</p>
+            </div>
+            <ul class="admin-highlight-list">
+                <?php foreach ($operationsHighlights as $item): ?>
+                    <li class="admin-highlight-item">
+                        <div class="admin-highlight-meta">
+                            <span class="admin-highlight-label"><?php echo htmlspecialchars($item['label'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="admin-highlight-hint"><?php echo htmlspecialchars($item['hint'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="admin-highlight-stats">
+                            <span class="admin-highlight-value"><?php echo htmlspecialchars($formatStat($item['value']), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <a class="admin-highlight-link" href="<?php echo htmlspecialchars($item['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?php echo htmlspecialchars($item['linkLabel'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
+
+        <section class="admin-panel">
+            <div class="admin-panel-header">
+                <h3 class="admin-panel-title">Logistica & servizi</h3>
+                <p class="admin-panel-subtitle">Monitoraggio pratiche e consegne</p>
+            </div>
+            <ul class="admin-highlight-list">
+                <?php foreach ($monitoringHighlights as $item): ?>
+                    <li class="admin-highlight-item">
+                        <div class="admin-highlight-meta">
+                            <span class="admin-highlight-label"><?php echo htmlspecialchars($item['label'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="admin-highlight-hint"><?php echo htmlspecialchars($item['hint'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="admin-highlight-stats">
+                            <span class="admin-highlight-value"><?php echo htmlspecialchars($formatStat($item['value']), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <a class="admin-highlight-link" href="<?php echo htmlspecialchars($item['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?php echo htmlspecialchars($item['linkLabel'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
+
+        <section class="admin-panel">
+            <div class="admin-panel-header">
+                <h3 class="admin-panel-title">Controlli & sicurezza</h3>
+                <p class="admin-panel-subtitle">Stato log, file e accessi</p>
+            </div>
+            <ul class="admin-highlight-list">
+                <?php foreach ($securityHighlights as $item): ?>
+                    <li class="admin-highlight-item">
+                        <div class="admin-highlight-meta">
+                            <span class="admin-highlight-label"><?php echo htmlspecialchars($item['label'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="admin-highlight-hint"><?php echo htmlspecialchars($item['hint'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="admin-highlight-stats">
+                            <span class="admin-highlight-value"><?php echo htmlspecialchars($formatStat($item['value']), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <a class="admin-highlight-link" href="<?php echo htmlspecialchars($item['href'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?php echo htmlspecialchars($item['linkLabel'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
     </div>
 </div>
 <?php include __DIR__ . '/../includes/admin_footer.php'; ?>
