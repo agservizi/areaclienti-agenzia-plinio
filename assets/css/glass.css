@@ -1,72 +1,17 @@
-body {
-    background: linear-gradient(135deg, #007bff, #00c6ff);
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    color: #ffffff;
-}
-
-.glass-container {
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    padding: 2rem;
-}
-
-.navbar-glass {
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    background-color: rgba(0, 123, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.card.glass-container {
-    height: 100%;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card.glass-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-}
-
-.btn-outline-light {
-    border-color: rgba(255, 255, 255, 0.6);
-    color: #ffffff;
-}
-
-.btn-outline-light:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.9);
-}
-
-.form-control,
-.form-select {
-    background-color: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-}
-
-.form-control:focus,
-.form-select:focus {
-    background-color: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.6);
-    color: #ffffff;
-    box-shadow: none;
-}
-
 .content-wrapper {
     padding-bottom: 3rem;
 }
 
-.footer-glass {
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    background-color: rgba(255, 255, 255, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    padding: 1.5rem 0;
+.glass-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.glass-grid-compact {
+    display: grid;
+    gap: 1rem;
+}
+
+.glass-text-muted {
+    color: rgba(235, 243, 255, 0.75);
 }
