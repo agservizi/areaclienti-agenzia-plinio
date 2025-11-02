@@ -6,9 +6,181 @@
 }
 
 body {
-    background-color: var(--ap-background);
+    background: radial-gradient(circle at 18% 18%, rgba(13, 110, 253, 0.15), transparent 55%),
+                radial-gradient(circle at 78% 2%, rgba(111, 66, 193, 0.18), transparent 58%),
+                linear-gradient(135deg, #f5f8ff 0%, #eef3ff 45%, #f9fbff 100%);
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #1b1f24;
+}
+
+.layout-public,
+.layout-client {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-public .public-main,
+.layout-client .client-main {
+    flex: 1 0 auto;
+}
+
+.public-footer,
+.client-footer {
+    margin-top: auto;
+    background: rgba(255, 255, 255, 0.38);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+.card,
+.glass-card,
+.card-bordered,
+.landing-card,
+.service-card,
+.tile-card {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 45px rgba(13, 110, 253, 0.12);
+}
+
+.card.border-0,
+.card.shadow-sm {
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+}
+
+.dashboard-hero {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(13, 110, 253, 0.02));
+    border: 1px solid rgba(13, 110, 253, 0.1);
+}
+
+.dashboard-hero h1 {
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+}
+
+.dashboard-quick-actions .btn {
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.stats-card {
+    border-radius: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 24px 48px rgba(13, 110, 253, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 52px rgba(13, 110, 253, 0.22);
+}
+
+.stats-card .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 110, 253, 0.25);
+    color: var(--ap-primary);
+    font-size: 1.4rem;
+}
+
+.stats-card .stat-label {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.stats-card .stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #0d1c2e;
+}
+
+.status-pill {
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pill[data-status="pending"] {
+    background: rgba(255, 193, 7, 0.12);
+    color: #b07900;
+}
+
+.status-pill[data-status="approved"],
+.status-pill[data-status="active"],
+.status-pill[data-status="delivered"] {
+    background: rgba(25, 135, 84, 0.12);
+    color: #146c43;
+}
+
+.status-pill[data-status="rejected"],
+.status-pill[data-status="cancelled"] {
+    background: rgba(220, 53, 69, 0.12);
+    color: #a71d2a;
+}
+
+.status-pill[data-status="open"],
+.status-pill[data-status="processing"],
+.status-pill[data-status="in_progress"] {
+    background: rgba(13, 110, 253, 0.12);
+    color: var(--ap-primary);
+}
+
+.table-modern thead th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6c7684;
+    border-bottom: 1px solid rgba(13, 110, 253, 0.12);
+}
+
+.table-modern tbody tr td {
+    vertical-align: middle;
+}
+
+.card-section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #6c7684;
+    text-transform: uppercase;
+}
+
+.card.card-bordered {
+    border: 1px solid rgba(13, 110, 253, 0.08);
+    border-radius: 1.5rem;
+}
+
+.card.card-bordered .card-header {
+    border-bottom: 1px dashed rgba(13, 110, 253, 0.16);
+}
+
+.empty-state {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: #6c7684;
+}
+
+@media (max-width: 767px) {
+    .dashboard-hero {
+        border-radius: 1.25rem;
+    }
+
+    .stats-card {
+        border-radius: 1rem;
+    }
 }
 
 .logo {
@@ -19,31 +191,59 @@ body {
 
 .client-header,
 .public-header {
-    background-color: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
 }
 
 .tile-card {
     border-radius: 1rem;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.55);
 }
 
 .service-card {
     border-radius: 1rem;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.55);
 }
 
 .landing-card {
-    border: 1px solid rgba(13, 110, 253, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .layout-admin {
     background-color: #f1f4f9;
 }
 
+.admin-wrapper {
+    min-height: 100vh;
+}
+
 .admin-sidebar {
     width: 240px;
-    background: var(--ap-primary-dark);
+    background: linear-gradient(160deg, rgba(13, 110, 253, 0.88), rgba(13, 110, 253, 0.68));
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
     min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(12, 76, 140, 0.18);
+}
+
+.admin-sidebar-inner {
+    gap: 1rem;
+}
+
+.sidebar-brand h2 {
+    letter-spacing: 0.02em;
+}
+
+.admin-main {
+    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .admin-sidebar .nav-link {
@@ -59,12 +259,22 @@ body {
 }
 
 .admin-topbar {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    position: sticky;
+    top: 0;
+    z-index: 1020;
 }
 
 .admin-content {
-    background: var(--ap-background);
+    background: rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     border-radius: 2rem 0 0 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .alert-success {
@@ -92,5 +302,18 @@ body {
 @media (max-width: 991px) {
     .admin-sidebar {
         display: none;
+        position: static;
+        height: auto;
+        overflow: visible;
+    }
+
+    .admin-main {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+    }
+
+    .admin-content {
+        overflow: visible;
     }
 }

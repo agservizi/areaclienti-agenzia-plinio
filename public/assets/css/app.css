@@ -215,12 +215,35 @@ body {
     background-color: #f1f4f9;
 }
 
+.admin-wrapper {
+    min-height: 100vh;
+}
+
 .admin-sidebar {
     width: 240px;
     background: linear-gradient(160deg, rgba(13, 110, 253, 0.88), rgba(13, 110, 253, 0.68));
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
     min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(12, 76, 140, 0.18);
+}
+
+.admin-sidebar-inner {
+    gap: 1rem;
+}
+
+.sidebar-brand h2 {
+    letter-spacing: 0.02em;
+}
+
+.admin-main {
+    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .admin-sidebar .nav-link {
@@ -239,6 +262,9 @@ body {
     background: rgba(255, 255, 255, 0.6);
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
+    position: sticky;
+    top: 0;
+    z-index: 1020;
 }
 
 .admin-content {
@@ -246,6 +272,9 @@ body {
     -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
     border-radius: 2rem 0 0 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .alert-success {
@@ -273,5 +302,18 @@ body {
 @media (max-width: 991px) {
     .admin-sidebar {
         display: none;
+        position: static;
+        height: auto;
+        overflow: visible;
+    }
+
+    .admin-main {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+    }
+
+    .admin-content {
+        overflow: visible;
     }
 }
